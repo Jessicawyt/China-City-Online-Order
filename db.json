@@ -1,0 +1,19 @@
+{
+  "dishes": [
+    {
+      "price": "22.99",
+      "name": "Dry Pot",
+      "id": 1
+    },
+    {
+      "price": "22.99",
+      "name": "Three Pepper Chicken",
+      "id": 2
+    },
+    {
+      "id": 3,
+      "name": "Fish and Eggplant",
+      "price": 15.99
+    }
+  ]
+}
