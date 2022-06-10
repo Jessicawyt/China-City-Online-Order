@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+// Local Imports
 import { addItem, removeItem } from '../features/cartSlice';
 
 const Dish = ({ name, price }) => {
@@ -10,13 +11,18 @@ const Dish = ({ name, price }) => {
   const { cartItems } = useSelector((state) => state.cart);
 
   useEffect(() => {
+    // if user resets the cart, qty should be set to zero
+    if (cartItems.length === 0) {
+      setQty(0);
+    }
+    // If there are already dishes in the cart, qty should start with it's qty saved in the store
     for (var i = 0; i < cartItems.length; i++) {
       if (name === cartItems[i].name) {
         setQty(cartItems[i].qty);
       }
     }
     return () => {};
-  }, []);
+  }, [cartItems, name]);
 
   const handleAddItem = () => {
     setQty((prev) => prev + 1);

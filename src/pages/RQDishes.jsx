@@ -10,12 +10,7 @@ import Dish from '../components/Dish';
 import { resetItems } from '../features/cartSlice';
 
 const RQDishes = () => {
-  const [isUpdate, setIsUpdate] = useState(false);
-  const [price, setPrice] = useState('');
-  const [name, setName] = useState('');
-
-  const { data, error, isError, isLoading, isFetching, isSuccess } =
-    useGetDishesQuery();
+  const { data, error, isError, isLoading } = useGetDishesQuery();
   const dispatch = useDispatch();
 
   const handleReset = () => {
