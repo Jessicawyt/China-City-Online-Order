@@ -4,7 +4,8 @@
   box-sizing: border-box;
 }
 
-.app {
+.App {
+  margin: 1.6rem;
 }
 
 a {
@@ -18,9 +19,6 @@ a {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-}
-
-.home {
 }
 
 .nav-bar-right {
