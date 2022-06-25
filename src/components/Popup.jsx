@@ -14,7 +14,7 @@ const Popup = (props) => {
   return (
     <Dialog open={openPopup} onClose={handleClose}>
       <DialogTitle>{name}</DialogTitle>
-      <DialogContent>
+      <DialogContent noWrap={false}>
         {description && <DialogContentText>{description}</DialogContentText>}
       </DialogContent>
     </Dialog>

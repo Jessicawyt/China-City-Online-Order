@@ -1,14 +1,32 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, CardMedia, CardContent, Typography, Box } from '@mui/material';
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  Box,
+  Stack,
+} from '@mui/material';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { GiChiliPepper } from 'react-icons/gi';
+
 // Local Imports
 import { addItem, removeItem } from '../features/cartSlice';
 import Popup from './Popup';
 
 const Dish = (props) => {
-  const { name, price, image, description } = props;
+  const {
+    name,
+    price,
+    image,
+    description,
+    isVegan,
+    ContainsAllergy,
+    glutenFree,
+    spicyLevel,
+  } = props;
 
   const [qty, setQty] = useState(0);
   const [popupOpen, setPopupOpen] = useState(false);
@@ -43,9 +61,17 @@ const Dish = (props) => {
     }
   };
 
+  const renderPeppers = () => {
+    let peppers = [];
+    for (let index = 0; index < spicyLevel; index++) {
+      peppers.push(<GiChiliPepper key={index} color="#d50000" />);
+    }
+    return peppers;
+  };
+
   return (
     <>
-      <Card>
+      <Card sx={{ marginTop: '8px', paddingTop: '0px' }}>
         <CardMedia
           component="img"
           width="120"
@@ -68,13 +94,17 @@ const Dish = (props) => {
             <Typography
               variant="subtitle2"
               component="span"
-              sx={{ letterSpacing: '-0.5px' }}
+              sx={{ letterSpacing: '-0.5px', fontWeight: 'bolder' }}
             >
               {name}
             </Typography>
-            <Typography variant="subtitle1" component="span">
-              {price}
-            </Typography>
+
+            <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+              <Typography variant="subtitle1" component="span">
+                {price}
+              </Typography>
+              <Stack direction="row">{renderPeppers()}</Stack>
+            </Stack>
           </CardContent>
           <Box
             sx={{
