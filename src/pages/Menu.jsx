@@ -1,5 +1,4 @@
 import { Grid, Stack, Tabs, Tab } from '@mui/material';
-// import { TabList, TabContext } from '@mui/lab';
 import { useState } from 'react';
 // Local Imports
 import { useGetDishesQuery } from '../features/dishesApi';
@@ -26,7 +25,6 @@ const Menu = () => {
   );
 
   const categorizeDishes = (id) => {
-    console.log(id);
     // filter dataDishes by categoryId
     if (dataDishes) {
       const filteredDishes = dataDishes.filter((d) => d.categoryId === id);
@@ -34,11 +32,12 @@ const Menu = () => {
     }
   };
 
+  console.log(dataDishes);
+
   return (
     <Stack direction="column">
       <Tabs
         position="sticky"
-        centered
         textColor="secondary"
         indicatorColor="secondary"
         variant="scrollable"
@@ -62,21 +61,40 @@ const Menu = () => {
         ))}
       </Tabs>
 
-      <Grid container spacing={4.5}>
-        {categorizedDishes?.map((d) => (
-          <Grid item key={d.id} xs={6} sm={4} md={3}>
-            <Dish
-              name={d.name}
-              price={d.price}
-              image={d.image}
-              description={d.description}
-              isVegan={d.isVegan}
-              ContainsAllergy={d.ContainsAllergy}
-              glutenFree={d.glutenFree}
-              spicyLevel={d.spicyLevel}
-            />
-          </Grid>
-        ))}
+      <Grid
+        container
+        spacing={3}
+        sx={{ paddingLeft: '10px', paddingRight: '10px' }}
+      >
+        {categorizedDishes.length > 0
+          ? categorizedDishes.map((d) => (
+              <Grid item key={d.id} xs={6} sm={4} md={3}>
+                <Dish
+                  name={d.name}
+                  price={d.price}
+                  image={d.image}
+                  description={d.description}
+                  isVegan={d.isVegan}
+                  ContainsAllergy={d.ContainsAllergy}
+                  glutenFree={d.glutenFree}
+                  spicyLevel={d.spicyLevel}
+                />
+              </Grid>
+            ))
+          : dataDishes?.map((d) => (
+              <Grid item key={d.id} xs={6} sm={4} md={3}>
+                <Dish
+                  name={d.name}
+                  price={d.price}
+                  image={d.image}
+                  description={d.description}
+                  isVegan={d.isVegan}
+                  ContainsAllergy={d.ContainsAllergy}
+                  glutenFree={d.glutenFree}
+                  spicyLevel={d.spicyLevel}
+                />
+              </Grid>
+            ))}
       </Grid>
     </Stack>
   );

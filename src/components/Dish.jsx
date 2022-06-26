@@ -87,14 +87,18 @@ const Dish = (props) => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              whiteSpace: 'nowrap',
+              // whiteSpace: 'nowrap',
               gap: '.4rem',
             }}
           >
             <Typography
               variant="subtitle2"
               component="span"
-              sx={{ letterSpacing: '-0.5px', fontWeight: 'bolder' }}
+              noWrap={true}
+              sx={{
+                letterSpacing: '-0.5px',
+                fontWeight: 'bolder',
+              }}
             >
               {name}
             </Typography>
