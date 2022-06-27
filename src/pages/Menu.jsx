@@ -6,6 +6,7 @@ import { useGetCategoriesQuery } from '../features/categoriesApi';
 import Dish from '../components/Dish';
 
 const Menu = () => {
+  // In order to show all dishes and all categories data, 2 seperate api calls are needed
   const {
     data: dataCategory,
     error: errorCategory,
@@ -32,7 +33,8 @@ const Menu = () => {
     }
   };
 
-  console.log(dataDishes);
+  console.log(val);
+  console.log(categorizedDishes);
 
   return (
     <Stack direction="column">
@@ -66,35 +68,37 @@ const Menu = () => {
         spacing={3}
         sx={{ paddingLeft: '10px', paddingRight: '10px' }}
       >
-        {categorizedDishes.length > 0
-          ? categorizedDishes.map((d) => (
-              <Grid item key={d.id} xs={6} sm={4} md={3}>
-                <Dish
-                  name={d.name}
-                  price={d.price}
-                  image={d.image}
-                  description={d.description}
-                  isVegan={d.isVegan}
-                  ContainsAllergy={d.ContainsAllergy}
-                  glutenFree={d.glutenFree}
-                  spicyLevel={d.spicyLevel}
-                />
-              </Grid>
-            ))
-          : dataDishes?.map((d) => (
-              <Grid item key={d.id} xs={6} sm={4} md={3}>
-                <Dish
-                  name={d.name}
-                  price={d.price}
-                  image={d.image}
-                  description={d.description}
-                  isVegan={d.isVegan}
-                  ContainsAllergy={d.ContainsAllergy}
-                  glutenFree={d.glutenFree}
-                  spicyLevel={d.spicyLevel}
-                />
-              </Grid>
-            ))}
+        {val !== 0 &&
+          categorizedDishes?.map((d) => (
+            <Grid item key={d.id} xs={6} sm={4} md={3}>
+              <Dish
+                name={d.name}
+                price={d.price}
+                image={d.image}
+                description={d.description}
+                isVegan={d.isVegan}
+                ContainsAllergy={d.ContainsAllergy}
+                glutenFree={d.glutenFree}
+                spicyLevel={d.spicyLevel}
+              />
+            </Grid>
+          ))}
+        {/* Rendering all the dishes when tab All is chosen, including the first rendering */}
+        {val === 0 &&
+          dataDishes?.map((d) => (
+            <Grid item key={d.id} xs={6} sm={4} md={3}>
+              <Dish
+                name={d.name}
+                price={d.price}
+                image={d.image}
+                description={d.description}
+                isVegan={d.isVegan}
+                ContainsAllergy={d.ContainsAllergy}
+                glutenFree={d.glutenFree}
+                spicyLevel={d.spicyLevel}
+              />
+            </Grid>
+          ))}
       </Grid>
     </Stack>
   );
