@@ -3,12 +3,13 @@ import { useSelector } from 'react-redux';
 const Cart = () => {
   const { itemCount, cartItems } = useSelector((state) => state.cart);
 
-  // Calculate the total
+  // Calculate the total price
   let total = 0;
   for (let i = 0; i < cartItems.length; i++) {
     total += cartItems[i].price * cartItems[i].qty;
   }
-  console.log(cartItems);
+  // round it up to 2 decimal place(just being cautious)
+  total = total.toFixed(2);
 
   return (
     <div className="cart-page">

@@ -10,10 +10,10 @@ export const dishesApi = createApi({
       query: () => '/dishes',
       providesTags: ['dishes'],
     }),
-    getDish: builder.query({
-      query: (id) => `/dishes/${id}`,
-      providesTags: ['dishes'],
-    }),
+    // getDish: builder.query({
+    //   query: (id) => `/dishes/${id}`,
+    //   providesTags: ['dishes'],
+    // }),
     updateDish: builder.mutation({
       query: ({ id, ...rest }) => ({
         url: `/dishes/${id}`,
