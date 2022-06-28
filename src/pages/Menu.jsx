@@ -33,9 +33,6 @@ const Menu = () => {
     }
   };
 
-  console.log(val);
-  console.log(categorizedDishes);
-
   return (
     <Stack direction="column">
       <Tabs
