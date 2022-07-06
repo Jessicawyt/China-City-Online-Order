@@ -1,10 +1,10 @@
 import { Grid, Stack, Tabs, Tab } from '@mui/material';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 // Local Imports
 import { useGetDishesQuery } from '../features/dishesApi';
 import { useGetCategoriesQuery } from '../features/categoriesApi';
 import Dish from '../components/Dish';
+import OrderSummary from '../components/OrderSummary';
 
 const Menu = () => {
   // In order to show all dishes and all categories data, 2 seperate api calls are needed
@@ -36,16 +36,6 @@ const Menu = () => {
       setCategorizedDishes(filteredDishes);
     }
   };
-
-  const { itemCount, cartItems } = useSelector((state) => state.cart);
-
-  // Calculate the total price
-  let total = 0;
-  for (let i = 0; i < cartItems.length; i++) {
-    total += cartItems[i].price * cartItems[i].qty;
-  }
-  // round it up to 2 decimal place(just being cautious)
-  total = total.toFixed(2);
 
   return (
     <Stack direction="column">
@@ -115,30 +105,7 @@ const Menu = () => {
             ))}
         </Grid>
 
-        <div className="cart-page">
-          <section className="cart-header">
-            <h3>My Cart</h3>
-          </section>
-          <div className="cart-main">
-            <section className="cart-list">
-              {cartItems.length > 0 &&
-                cartItems.map((i) => (
-                  <div className="cart-list-item" key={i.name}>
-                    {<span>{i.name}</span>}
-                    {<span>x</span>}
-                    {<span>{i.qty}</span>}
-                  </div>
-                ))}
-            </section>
-            <section className="cart-bottom">
-              <p className="cart-item-count">{itemCount} Items</p>
-              <div className="cart-total">
-                <p>Total</p>
-                <p>{total}</p>
-              </div>
-            </section>
-          </div>
-        </div>
+        <OrderSummary />
       </Stack>
     </Stack>
   );
