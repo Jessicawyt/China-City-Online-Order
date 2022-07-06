@@ -18,6 +18,7 @@ import { GiChiliPepper } from 'react-icons/gi';
 // Local Imports
 import { addItem, removeItem } from '../features/cartSlice';
 import Popup from './Popup';
+import { useGetDishesByCategoryQuery } from '../features/dishesApi';
 
 const Dish = (props) => {
   const {
@@ -29,6 +30,7 @@ const Dish = (props) => {
     ContainsAllergy,
     glutenFree,
     spicyLevel,
+    sideCategoryId,
   } = props;
 
   const [qty, setQty] = useState(0);
@@ -38,31 +40,33 @@ const Dish = (props) => {
 
   const { cartItems } = useSelector((state) => state.cart);
 
-  useEffect(() => {
-    // if user resets the cart, qty should be set to zero
-    if (cartItems.length === 0) {
-      setQty(0);
-    }
-    // If there are already dishes in the cart, qty should start with it's qty saved in the store
-    for (var i = 0; i < cartItems.length; i++) {
-      if (name === cartItems[i].name) {
-        setQty(cartItems[i].qty);
-      }
-    }
-    return () => {};
-  }, [cartItems, name]);
+  const { data } = useGetDishesByCategoryQuery(sideCategoryId);
 
-  const handleAddItem = () => {
-    setQty((prev) => prev + 1);
-    dispatch(addItem({ name, price, qty: 1 }));
-  };
+  // useEffect(() => {
+  //   // if user resets the cart, qty should be set to zero
+  //   if (cartItems.length === 0) {
+  //     setQty(0);
+  //   }
+  //   // If there are already dishes in the cart, qty should start with it's qty saved in the store
+  //   for (var i = 0; i < cartItems.length; i++) {
+  //     if (name === cartItems[i].name) {
+  //       setQty(cartItems[i].qty);
+  //     }
+  //   }
+  //   return () => {};
+  // }, [cartItems, name]);
 
-  const handleRemoveItem = () => {
-    if (qty >= 1) {
-      setQty((prev) => prev - 1);
-      dispatch(removeItem({ name, price, qty: 1 }));
-    }
-  };
+  // const handleAddItem = () => {
+  //   setQty((prev) => prev + 1);
+  //   dispatch(addItem({ name, price, qty: 1 }));
+  // };
+
+  // const handleRemoveItem = () => {
+  //   if (qty >= 1) {
+  //     setQty((prev) => prev - 1);
+  //     dispatch(removeItem({ name, price, qty: 1 }));
+  //   }
+  // };
 
   const renderPeppers = () => {
     let peppers = [];
@@ -92,6 +96,7 @@ const Dish = (props) => {
   const renderIcon = (iconIndex, jsx) => {
     return (
       <div
+        key={iconIndex}
         style={{
           position: 'absolute',
           backgroundColor: 'white',
@@ -127,7 +132,8 @@ const Dish = (props) => {
     }
   };
 
-  //Better readability, but needs rewrite if there is need of add-ons in the future:
+  // Better readability, but needs rewrite if there is need of add-ons in the future:
+
   // const renderIcons = () => {
   // if (ContainsAllergy && !glutenFree) {
   //   return renderIcon(0, allergyJsx);
@@ -190,7 +196,7 @@ const Dish = (props) => {
               <Stack direction="row">{renderPeppers()}</Stack>
             </Stack>
           </CardContent>
-          <Box
+          {/* <Box
             sx={{
               display: 'flex',
               justifyContent: 'center',
@@ -220,15 +226,24 @@ const Dish = (props) => {
               onClick={handleAddItem}
               sx={{ '&:hover': { cursor: 'pointer' } }}
             />
-          </Box>
+          </Box> */}
         </Box>
       </Card>
+
+      {/* QUESTION: Is it considered Prop Drilling here if the properties are passed down again??? Is it better to fetch single dish data in Popup level?*/}
       {popupOpen && (
         <Popup
           openPopup={popupOpen}
           handleClose={() => setPopupOpen(false)}
-          description={description}
           name={name}
+          price={price}
+          image={image}
+          description={description}
+          isVegan={isVegan}
+          ContainsAllergy={ContainsAllergy}
+          glutenFree={glutenFree}
+          spicyLevel={spicyLevel}
+          sidesData={data}
         />
       )}
     </>

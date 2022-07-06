@@ -24,15 +24,10 @@ a {
 }
 
 .cart-page {
-  position: absolute;
-  bottom: 15%;
-  top: 22%;
-  left: 20%;
-  right: 20%;
-
-  background-color: black;
-  color: white;
-
+  /* background-color: black;
+  color: white; */
+  width: 400px;
+  padding: 0 1rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
