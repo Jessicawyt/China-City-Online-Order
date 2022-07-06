@@ -64,7 +64,6 @@ const Popup = (props) => {
       dispatch(addItem({ name, price, qty }));
     }
   };
-  // console.log(cartItems);
 
   useEffect(() => {
     // if user resets the cart, qty should be set to zero

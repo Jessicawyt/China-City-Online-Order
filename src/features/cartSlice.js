@@ -32,6 +32,13 @@ const cartSlice = createSlice({
       localStorage.removeItem('cartItems');
       localStorage.removeItem('itemCount');
     },
+    // remove dish or multiple dishes of the same kind from OrderSummary component
+    removeItemFromOrder: (state, action) => {
+      state.itemCount -= action.payload.qty;
+      handlePayload(action.payload, state.cartItems, 'REMOVEFROMORDER');
+      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+      localStorage.setItem('itemCount', JSON.stringify(state.itemCount));
+    },
   },
 });
 
@@ -64,6 +71,8 @@ const handlePayload = (payload, stateArr, operation) => {
     stateArr = stateArr.splice(index, 1);
   } else if (!exists && operation === 'ADD') {
     stateArr.push(payload);
+  } else if (exists && operation === 'REMOVEFROMORDER') {
+    stateArr = stateArr.splice(index, 1);
   }
   // If it is the first item adding to the cart
   if (stateArr.length === 0 && operation === 'ADD') {
@@ -71,5 +80,6 @@ const handlePayload = (payload, stateArr, operation) => {
   }
 };
 
-export const { addItem, removeItem, resetItems } = cartSlice.actions;
+export const { addItem, removeItem, resetItems, removeItemFromOrder } =
+  cartSlice.actions;
 export default cartSlice.reducer;
