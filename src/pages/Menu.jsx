@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useGetDishesQuery } from '../features/dishesApi';
 import { useGetCategoriesQuery } from '../features/categoriesApi';
 import Dish from '../components/Dish';
+import OrderSummary from '../components/OrderSummary';
 
 const Menu = () => {
   // In order to show all dishes and all categories data, 2 seperate api calls are needed
@@ -25,6 +26,9 @@ const Menu = () => {
     dataDishes ? dataDishes : []
   );
 
+  // get side categoryId for customization in Popup
+  const sideCategoryId = dataCategory?.find((c) => c.category === 'Side').id;
+
   const categorizeDishes = (id) => {
     // filter dataDishes by categoryId
     if (dataDishes) {
@@ -32,9 +36,6 @@ const Menu = () => {
       setCategorizedDishes(filteredDishes);
     }
   };
-
-  console.log(val);
-  console.log(categorizedDishes);
 
   return (
     <Stack direction="column">
@@ -63,43 +64,50 @@ const Menu = () => {
         ))}
       </Tabs>
 
-      <Grid
-        container
-        spacing={3}
-        sx={{ paddingLeft: '10px', paddingRight: '10px' }}
-      >
-        {val !== 0 &&
-          categorizedDishes?.map((d) => (
-            <Grid item key={d.id} xs={6} sm={4} md={3}>
-              <Dish
-                name={d.name}
-                price={d.price}
-                image={d.image}
-                description={d.description}
-                isVegan={d.isVegan}
-                ContainsAllergy={d.ContainsAllergy}
-                glutenFree={d.glutenFree}
-                spicyLevel={d.spicyLevel}
-              />
-            </Grid>
-          ))}
-        {/* Rendering all the dishes when tab All is chosen, including the first rendering */}
-        {val === 0 &&
-          dataDishes?.map((d) => (
-            <Grid item key={d.id} xs={6} sm={4} md={3}>
-              <Dish
-                name={d.name}
-                price={d.price}
-                image={d.image}
-                description={d.description}
-                isVegan={d.isVegan}
-                ContainsAllergy={d.ContainsAllergy}
-                glutenFree={d.glutenFree}
-                spicyLevel={d.spicyLevel}
-              />
-            </Grid>
-          ))}
-      </Grid>
+      <Stack direction="row">
+        <Grid
+          container
+          spacing={3}
+          sx={{ paddingLeft: '10px', paddingRight: '10px' }}
+        >
+          {val !== 0 &&
+            categorizedDishes?.map((d) => (
+              <Grid item key={d.id} xs={6} sm={6} md={4}>
+                <Dish
+                  name={d.name}
+                  price={d.price}
+                  image={d.image}
+                  description={d.description}
+                  isVegan={d.isVegan}
+                  ContainsAllergy={d.ContainsAllergy}
+                  glutenFree={d.glutenFree}
+                  spicyLevel={d.spicyLevel}
+                  sideCategoryId={sideCategoryId}
+                />
+              </Grid>
+            ))}
+          {/* Rendering all the dishes when tab All is chosen, including the first rendering */}
+          {val === 0 &&
+            dataDishes?.map((d) => (
+              <Grid item key={d.id} xs={6} sm={4} md={4}>
+                <Dish
+                  dishId={d.id}
+                  name={d.name}
+                  price={d.price}
+                  image={d.image}
+                  description={d.description}
+                  isVegan={d.isVegan}
+                  ContainsAllergy={d.ContainsAllergy}
+                  glutenFree={d.glutenFree}
+                  spicyLevel={d.spicyLevel}
+                  sideCategoryId={sideCategoryId}
+                />
+              </Grid>
+            ))}
+        </Grid>
+
+        <OrderSummary sideCategoryId={sideCategoryId} />
+      </Stack>
     </Stack>
   );
 };

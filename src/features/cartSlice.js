@@ -14,8 +14,7 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addItem: (state, action) => {
-      // Keep track of the total item number
-      state.itemCount = state.itemCount + 1;
+      state.itemCount += action.payload.qty;
       handlePayload(action.payload, state.cartItems, 'ADD');
       localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
       localStorage.setItem('itemCount', JSON.stringify(state.itemCount));
@@ -31,6 +30,13 @@ const cartSlice = createSlice({
       state.cartItems = [];
       localStorage.removeItem('cartItems');
       localStorage.removeItem('itemCount');
+    },
+    // remove dish or multiple dishes of the same kind from OrderSummary component
+    removeItemFromOrder: (state, action) => {
+      state.itemCount -= action.payload.qty;
+      handlePayload(action.payload, state.cartItems, 'REMOVEFROMORDER');
+      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+      localStorage.setItem('itemCount', JSON.stringify(state.itemCount));
     },
   },
 });
@@ -48,7 +54,7 @@ const handlePayload = (payload, stateArr, operation) => {
   // ... change the value of exists accordingly.
   // If it exists, find the dish index in the array
   for (let i = 0; i < stateArr.length; i++) {
-    if (payload.name === stateArr[i].name) {
+    if (payload.id.toString() === stateArr[i].id.toString()) {
       exists = true;
       index = i;
     }
@@ -57,13 +63,15 @@ const handlePayload = (payload, stateArr, operation) => {
   // If the new dish doesn't exist, push the new dish object into the array, remove logic could be ignored because ...
   // ... the dispatch method won't be called in the first place
   if (exists && operation === 'ADD') {
-    stateArr[index].qty = stateArr[index].qty + 1;
+    stateArr[index].qty = stateArr[index].qty + payload.qty;
   } else if (exists && operation === 'REMOVE' && stateArr[index].qty > 1) {
     stateArr[index].qty = stateArr[index].qty - 1;
   } else if (exists && operation === 'REMOVE' && stateArr[index].qty === 1) {
     stateArr = stateArr.splice(index, 1);
   } else if (!exists && operation === 'ADD') {
     stateArr.push(payload);
+  } else if (exists && operation === 'REMOVEFROMORDER') {
+    stateArr = stateArr.splice(index, 1);
   }
   // If it is the first item adding to the cart
   if (stateArr.length === 0 && operation === 'ADD') {
@@ -71,5 +79,6 @@ const handlePayload = (payload, stateArr, operation) => {
   }
 };
 
-export const { addItem, removeItem, resetItems } = cartSlice.actions;
+export const { addItem, removeItem, resetItems, removeItemFromOrder } =
+  cartSlice.actions;
 export default cartSlice.reducer;

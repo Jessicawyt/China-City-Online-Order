@@ -9,16 +9,25 @@ a {
   color: black;
 }
 
+.allergy,
+.gf {
+  width: 20px;
+  height: 20px;
+}
+
+@media screen and (max-width: 500px) {
+  .allergy,
+  .gf {
+    width: 18px;
+    height: 18px;
+  }
+}
+
 .cart-page {
-  position: absolute;
-  bottom: 15%;
-  top: 22%;
-  left: 20%;
-  right: 20%;
-
-  background-color: black;
-  color: white;
-
+  /* background-color: black;
+  color: white; */
+  width: 400px;
+  padding: 0 1rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

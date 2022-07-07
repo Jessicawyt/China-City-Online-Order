@@ -10,10 +10,14 @@ export const dishesApi = createApi({
       query: () => '/dishes',
       providesTags: ['dishes'],
     }),
-    // getDish: builder.query({
-    //   query: (id) => `/dishes/${id}`,
-    //   providesTags: ['dishes'],
-    // }),
+    getDishesByCategory: builder.query({
+      query: (categoryId) => `/categories/${categoryId}/dishes`,
+      providesTags: ['categories'],
+    }),
+    getDish: builder.query({
+      query: (id) => `/dishes/${id}`,
+      providesTags: ['dishes'],
+    }),
     updateDish: builder.mutation({
       query: ({ id, ...rest }) => ({
         url: `/dishes/${id}`,
@@ -35,6 +39,7 @@ export const dishesApi = createApi({
 
 export const {
   useGetDishesQuery,
+  useGetDishesByCategoryQuery,
   useGetDishQuery,
   useUpdateDishMutation,
   useDeleteDishMutation,

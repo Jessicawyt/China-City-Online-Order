@@ -35,6 +35,14 @@
     {
       "id": 9,
       "category": "House Special"
+    },
+    {
+      "id": 10,
+      "category": "Side"
+    },
+    {
+      "id": 11,
+      "category": "Addon"
     }
   ],
   "dishes": [
@@ -157,6 +165,97 @@
       "image": "https://www.chinasichuanfood.com/wp-content/uploads/2014/10/Huan-pork-stir-fry-11.jpg",
       "price": 15.99,
       "categoryId": 4
+    },
+    {
+      "id": 11,
+      "name": "Steamed Rice",
+      "description": "Perfect freshly Steamed Rice",
+      "spicyLevel": 0,
+      "isVegan": true,
+      "isFree": true,
+      "ContainsAllergy": false,
+      "glutenFree": false,
+      "image": "https://assets.epicurious.com/photos/57d70c8ade27564257b657c6/master/w_1280,c_limit/perfect-steamed-rice.jpg",
+      "price": 0.0,
+      "categoryId": 10
+    },
+    {
+      "id": 12,
+      "name": "Steamed Rice",
+      "description": "Perfect freshly Steamed Rice",
+      "spicyLevel": 0,
+      "isVegan": true,
+      "isFree": false,
+      "ContainsAllergy": false,
+      "glutenFree": false,
+      "image": "https://assets.epicurious.com/photos/57d70c8ade27564257b657c6/master/w_1280,c_limit/perfect-steamed-rice.jpg",
+      "price": 1.5,
+      "categoryId": 11
+    },
+    {
+      "id": 13,
+      "name": "Fried Rice",
+      "description": "Flavorful Fried Rice with Soy Sauce",
+      "spicyLevel": 0,
+      "isVegan": true,
+      "isFree": true,
+      "ContainsAllergy": false,
+      "glutenFree": false,
+      "image": "https://assets.epicurious.com/photos/57d70c8ade27564257b657c6/master/w_1280,c_limit/perfect-steamed-rice.jpg",
+      "price": 0.0,
+      "categoryId": 10
+    },
+    {
+      "id": 14,
+      "name": "Fried Rice",
+      "description": "Flavorful Fried Rice with Soy Sauce",
+      "spicyLevel": 0,
+      "isVegan": true,
+      "isFree": false,
+      "ContainsAllergy": false,
+      "glutenFree": false,
+      "image": "https://assets.epicurious.com/photos/57d70c8ade27564257b657c6/master/w_1280,c_limit/perfect-steamed-rice.jpg",
+      "price": 1.5,
+      "categoryId": 11
+    },
+    {
+      "id": 15,
+      "name": "Plain LoMain",
+      "description": "LoMain with Soy Sauce",
+      "spicyLevel": 0,
+      "isVegan": true,
+      "isFree": false,
+      "ContainsAllergy": false,
+      "glutenFree": false,
+      "image": "https://assets.epicurious.com/photos/57d70c8ade27564257b657c6/master/w_1280,c_limit/perfect-steamed-rice.jpg",
+      "price": 1.5,
+      "categoryId": 10
+    },
+    {
+      "id": 16,
+      "name": "Pork Fried Rice",
+      "description": "Flavorful fried rice with pork and soy sauce",
+      "spicyLevel": 0,
+      "isVegan": false,
+      "isFree": false,
+      "ContainsAllergy": false,
+      "glutenFree": false,
+      "image": "https://assets.epicurious.com/photos/57d70c8ade27564257b657c6/master/w_1280,c_limit/perfect-steamed-rice.jpg",
+      "price": 1.5,
+      "categoryId": 10
+    },
+    {
+      "id": 17,
+      "name": "Shrimp Fried Rice",
+      "description": "Flavorful fried rice with shrimp and soy sauce",
+      "spicyLevel": 0,
+      "isVegan": false,
+      "isFree": false,
+      "ContainsAllergy": true,
+      "glutenFree": false,
+      "image": "https://assets.epicurious.com/photos/57d70c8ade27564257b657c6/master/w_1280,c_limit/perfect-steamed-rice.jpg",
+      "price": 3.0,
+      "categoryId": 10
     }
   ]
 }
