@@ -91,6 +91,7 @@ const Menu = () => {
             dataDishes?.map((d) => (
               <Grid item key={d.id} xs={6} sm={4} md={4}>
                 <Dish
+                  dishId={d.id}
                   name={d.name}
                   price={d.price}
                   image={d.image}
@@ -105,7 +106,7 @@ const Menu = () => {
             ))}
         </Grid>
 
-        <OrderSummary />
+        <OrderSummary sideCategoryId={sideCategoryId} />
       </Stack>
     </Stack>
   );

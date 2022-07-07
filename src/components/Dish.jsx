@@ -31,6 +31,7 @@ const Dish = (props) => {
     glutenFree,
     spicyLevel,
     sideCategoryId,
+    dishId,
   } = props;
 
   const [qty, setQty] = useState(0);
@@ -196,37 +197,6 @@ const Dish = (props) => {
               <Stack direction="row">{renderPeppers()}</Stack>
             </Stack>
           </CardContent>
-          {/* <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              gap: '1.5rem',
-            }}
-          >
-            {qty === 0 ? (
-              <RemoveCircleIcon sx={{ opacity: '0.2' }} />
-            ) : (
-              <RemoveCircleIcon
-                onClick={handleRemoveItem}
-                sx={{ '&:hover': { cursor: 'pointer' } }}
-              />
-            )}
-
-            {qty === 0 ? (
-              <Typography variant="h6" component="h6">
-                0
-              </Typography>
-            ) : (
-              <Typography variant="h6" component="h6">
-                {qty}
-              </Typography>
-            )}
-            <AddCircleIcon
-              onClick={handleAddItem}
-              sx={{ '&:hover': { cursor: 'pointer' } }}
-            />
-          </Box> */}
         </Box>
       </Card>
 
@@ -237,13 +207,15 @@ const Dish = (props) => {
           handleClose={() => setPopupOpen(false)}
           name={name}
           price={price}
-          image={image}
           description={description}
           isVegan={isVegan}
           ContainsAllergy={ContainsAllergy}
           glutenFree={glutenFree}
           spicyLevel={spicyLevel}
           sidesData={data}
+          isEditPopup={!popupOpen}
+          dishId={dishId}
+          quantity={1}
         />
       )}
     </>
