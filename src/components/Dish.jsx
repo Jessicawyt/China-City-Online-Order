@@ -8,8 +8,6 @@ import {
   Box,
   Stack,
 } from '@mui/material';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { GiChiliPepper } from 'react-icons/gi';
 // How to import FontAwesomeIcon:
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -32,42 +30,12 @@ const Dish = (props) => {
     spicyLevel,
     sideCategoryId,
     dishId,
+    isAddOn,
   } = props;
 
-  const [qty, setQty] = useState(0);
   const [popupOpen, setPopupOpen] = useState(false);
 
-  const dispatch = useDispatch();
-
-  const { cartItems } = useSelector((state) => state.cart);
-
   const { data } = useGetDishesByCategoryQuery(sideCategoryId);
-
-  // useEffect(() => {
-  //   // if user resets the cart, qty should be set to zero
-  //   if (cartItems.length === 0) {
-  //     setQty(0);
-  //   }
-  //   // If there are already dishes in the cart, qty should start with it's qty saved in the store
-  //   for (var i = 0; i < cartItems.length; i++) {
-  //     if (name === cartItems[i].name) {
-  //       setQty(cartItems[i].qty);
-  //     }
-  //   }
-  //   return () => {};
-  // }, [cartItems, name]);
-
-  // const handleAddItem = () => {
-  //   setQty((prev) => prev + 1);
-  //   dispatch(addItem({ name, price, qty: 1 }));
-  // };
-
-  // const handleRemoveItem = () => {
-  //   if (qty >= 1) {
-  //     setQty((prev) => prev - 1);
-  //     dispatch(removeItem({ name, price, qty: 1 }));
-  //   }
-  // };
 
   const renderPeppers = () => {
     let peppers = [];
@@ -216,6 +184,7 @@ const Dish = (props) => {
           isEditPopup={!popupOpen}
           dishId={dishId}
           quantity={1}
+          isAddOn={isAddOn}
         />
       )}
     </>

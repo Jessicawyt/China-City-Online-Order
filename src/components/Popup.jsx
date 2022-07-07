@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 // Local Imports
-import { addItem, removeItem } from '../features/cartSlice';
+import { addItem, updateItem } from '../features/cartSlice';
 
 const Popup = (props) => {
   const {
@@ -37,34 +37,29 @@ const Popup = (props) => {
     sidesData,
     isEditPopup,
     dishId,
+    side,
     quantity,
+    isAddOn,
   } = props;
 
   const dispatch = useDispatch();
 
-  const { cartItems } = useSelector((state) => state.cart);
-
+  // qty is shared by the dish chosen and the side chosen
   const [qty, setQty] = useState(quantity);
 
   // sides only stores 1 side id
-  const [sides, setSides] = useState([]);
+  const [sideId, setSideId] = useState(
+    isEditPopup ? (side === 'NoSide' ? ['NoSide'] : [side.id.toString()]) : []
+  );
 
   const handleChange = (e) => {
     //if the side is chosen, remove it from array
-    if (sides.includes(e.target.value)) {
-      setSides([]);
+    if (sideId.includes(e.target.value)) {
+      setSideId([]);
     }
     // if the side is not chosen, add it
     else {
-      setSides([e.target.value]);
-      // find the dish name & price AND update cart state in the store
-
-      let addedItem = sidesData?.find((s) => s.id === Number(sides[0]));
-      const id = dishId;
-      const name = addedItem.name;
-      const price = addedItem.price;
-      const qty = 1;
-      dispatch(addItem({ id, name, price, qty }));
+      setSideId([e.target.value]);
     }
   };
 
@@ -83,20 +78,45 @@ const Popup = (props) => {
   // }, [cartItems, name]);
 
   const handleAddItem = () => {
-    const id = dishId;
-    dispatch(
-      addItem({
-        id,
-        name,
-        price,
-        qty,
-        description,
-        isVegan,
-        ContainsAllergy,
-        glutenFree,
-        spicyLevel,
-      })
-    );
+    if (sideId.length > 0 && sideId[0] !== 'NoSide') {
+      handleClose();
+      // find the side chosed by its id(local state side)
+      let sideObj = sidesData.find(
+        (s) => s.id.toString() === sideId[0].toString()
+      );
+      // add qty property to the obj
+      sideObj = { ...sideObj, qty: qty };
+      dispatch(
+        addItem({
+          id: dishId,
+          name,
+          price,
+          qty,
+          description,
+          isVegan,
+          ContainsAllergy,
+          glutenFree,
+          spicyLevel,
+          side: sideObj,
+        })
+      );
+    }
+    if (sideId.length > 0 && sideId[0] === 'NoSide') {
+      handleClose();
+      dispatch(
+        addItem({
+          id: dishId,
+          name,
+          price,
+          qty,
+          description,
+          isVegan,
+          ContainsAllergy,
+          glutenFree,
+          spicyLevel,
+        })
+      );
+    }
   };
 
   const incrementItem = () => {
@@ -109,7 +129,31 @@ const Popup = (props) => {
     }
   };
 
-  const handleUpdateCart = () => {};
+  const handleUpdateCart = () => {
+    handleClose();
+    // if there is no side
+    if (sideId[0] === 'NoSide' || sideId === []) {
+      dispatch(
+        updateItem({
+          id: dishId,
+          qty,
+        })
+      );
+    } else {
+      let sideObj = sidesData.find(
+        (s) => s.id.toString() === sideId[0].toString()
+      );
+      sideObj = { ...sideObj, qty };
+      console.log(sideObj);
+      dispatch(
+        updateItem({
+          id: dishId,
+          qty,
+          side: sideObj,
+        })
+      );
+    }
+  };
 
   // 3 => 3.00
   const formatNumber = (n) => {
@@ -128,43 +172,62 @@ const Popup = (props) => {
       <DialogContent>
         {description && <DialogContentText>{description}</DialogContentText>}
 
-        <Stack direction="column">
-          <FormControl>
-            <Stack direction="row" sx={{ alignItems: 'center' }}>
-              <FormLabel
-                sx={{ flexGrow: 1, fontWeight: 'bolder', color: 'black' }}
-              >
-                Choose Your Side
-              </FormLabel>
-              <Typography variant="subtitle1" component="span">
-                Required
-              </Typography>
-            </Stack>
-            <FormGroup>
-              {sidesData?.map((s) => (
-                <Stack direction="row" key={s.id}>
-                  <FormControlLabel
-                    sx={{ flexGrow: 1 }}
-                    label={s.name}
-                    value={s.id.toString()}
-                    control={
-                      <Checkbox
-                        checked={sides.includes(s.id.toString())}
-                        onChange={handleChange}
-                        disabled={
-                          sides.length === 1 && !sides.includes(s.id.toString())
-                        }
-                      />
-                    }
-                  />
-                  <Typography variant="subtitle1" component="span">
-                    {s.isFree ? '-' : '$' + formatNumber(s.price)}
-                  </Typography>
-                </Stack>
-              ))}
-            </FormGroup>
-          </FormControl>
-        </Stack>
+        {!isAddOn && (
+          <Stack direction="column">
+            <FormControl>
+              <Stack direction="row" sx={{ alignItems: 'center' }}>
+                <FormLabel
+                  sx={{ flexGrow: 1, fontWeight: 'bolder', color: 'black' }}
+                >
+                  Choose Your Side
+                </FormLabel>
+                <Typography variant="subtitle1" component="span">
+                  Required
+                </Typography>
+              </Stack>
+
+              <FormGroup>
+                {sidesData?.map((s) => (
+                  <Stack direction="row" key={s.id}>
+                    <FormControlLabel
+                      sx={{ flexGrow: 1 }}
+                      label={s.name}
+                      value={s.id.toString()}
+                      control={
+                        <Checkbox
+                          checked={sideId.includes(s.id.toString())}
+                          onChange={handleChange}
+                          disabled={
+                            sideId.length === 1 &&
+                            !sideId.includes(s.id.toString())
+                          }
+                        />
+                      }
+                    />
+                    <Typography variant="subtitle1" component="span">
+                      {s.isFree ? '-' : '$' + formatNumber(s.price)}
+                    </Typography>
+                  </Stack>
+                ))}
+
+                <FormControlLabel
+                  sx={{ flexGrow: 1 }}
+                  label="No side"
+                  value="NoSide"
+                  control={
+                    <Checkbox
+                      checked={sideId.includes('NoSide')}
+                      onChange={handleChange}
+                      disabled={
+                        sideId.length === 1 && !sideId.includes('NoSide')
+                      }
+                    />
+                  }
+                />
+              </FormGroup>
+            </FormControl>
+          </Stack>
+        )}
       </DialogContent>
 
       <DialogActions>

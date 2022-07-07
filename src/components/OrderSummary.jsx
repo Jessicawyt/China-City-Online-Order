@@ -5,7 +5,6 @@ import { useState } from 'react';
 // Local Imports
 import { removeItemFromOrder, removeItem } from '../features/cartSlice';
 import { useGetDishQuery } from '../features/dishesApi';
-import EditPopup from '../components/EditPopup';
 import Popup from './Popup';
 import { useGetDishesByCategoryQuery } from '../features/dishesApi';
 
@@ -24,6 +23,9 @@ const OrderSummary = (props) => {
   // Calculate the total price
   let total = cartItems.reduce((sum, dish) => {
     sum += dish.price * dish.qty;
+    if (dish.side) {
+      sum += dish.side.qty * dish.side.price;
+    }
     return sum;
   }, 0);
 
@@ -67,7 +69,8 @@ const OrderSummary = (props) => {
     isVegan,
     ContainsAllergy,
     glutenFree,
-    spicyLevel
+    spicyLevel,
+    side
   ) => {
     setDishData({
       id,
@@ -79,6 +82,7 @@ const OrderSummary = (props) => {
       ContainsAllergy,
       glutenFree,
       spicyLevel,
+      side,
     });
     setOpenEditPopup(true);
   };
@@ -103,6 +107,15 @@ const OrderSummary = (props) => {
                   {<Typography>{i.qty}</Typography>}
                   {<Typography>{i.name}</Typography>}
                 </Stack>
+
+                {i.side && (
+                  <Stack direction="row" spacing={3}>
+                    <Typography>-</Typography>
+                    <Typography>{i.side.qty}</Typography>
+                    <Typography>{i.side.name}</Typography>
+                  </Stack>
+                )}
+
                 <Stack direction="row">
                   <Button
                     onClick={() =>
@@ -115,7 +128,8 @@ const OrderSummary = (props) => {
                         i.isVegan,
                         i.ContainsAllergy,
                         i.glutenFree,
-                        i.spicyLevel
+                        i.spicyLevel,
+                        i.side
                       )
                     }
                   >
@@ -165,6 +179,7 @@ const OrderSummary = (props) => {
           isEditPopup={openEditPopup}
           dishId={dishData.id}
           quantity={dishData.qty}
+          side={dishData.side ? dishData.side : 'NoSide'}
         />
       )}
     </div>

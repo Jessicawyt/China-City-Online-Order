@@ -21,18 +21,26 @@ const Menu = () => {
     isLoading: isLoadingDishes,
   } = useGetDishesQuery();
 
-  const [val, setVal] = useState(0);
-  const [categorizedDishes, setCategorizedDishes] = useState(
-    dataDishes ? dataDishes : []
-  );
-
   // get side categoryId for customization in Popup
   const sideCategoryId = dataCategory?.find((c) => c.category === 'Side').id;
+  const addOnCategoryId = dataCategory?.find((c) => c.category === 'Add-on').id;
+
+  const filterCategories = dataCategory?.filter((c) => c.id !== sideCategoryId);
+  const filteredDataDishes = dataDishes?.filter(
+    (d) => d.categoryId !== sideCategoryId
+  );
+
+  const [val, setVal] = useState(0);
+  const [categorizedDishes, setCategorizedDishes] = useState(
+    filteredDataDishes ? filteredDataDishes : []
+  );
 
   const categorizeDishes = (id) => {
     // filter dataDishes by categoryId
-    if (dataDishes) {
-      const filteredDishes = dataDishes.filter((d) => d.categoryId === id);
+    if (filteredDataDishes && id !== sideCategoryId) {
+      const filteredDishes = filteredDataDishes.filter(
+        (d) => d.categoryId === id
+      );
       setCategorizedDishes(filteredDishes);
     }
   };
@@ -54,7 +62,7 @@ const Menu = () => {
           sx={{ fontSize: '10px' }}
           onClick={() => setCategorizedDishes(dataDishes)}
         />
-        {dataCategory?.map((d) => (
+        {filterCategories?.map((d) => (
           <Tab
             key={d.id}
             label={d.category}
@@ -74,6 +82,7 @@ const Menu = () => {
             categorizedDishes?.map((d) => (
               <Grid item key={d.id} xs={6} sm={6} md={4}>
                 <Dish
+                  dishId={d.id}
                   name={d.name}
                   price={d.price}
                   image={d.image}
@@ -83,12 +92,13 @@ const Menu = () => {
                   glutenFree={d.glutenFree}
                   spicyLevel={d.spicyLevel}
                   sideCategoryId={sideCategoryId}
+                  isAddOn={d.categoryId === addOnCategoryId}
                 />
               </Grid>
             ))}
           {/* Rendering all the dishes when tab All is chosen, including the first rendering */}
           {val === 0 &&
-            dataDishes?.map((d) => (
+            filteredDataDishes?.map((d) => (
               <Grid item key={d.id} xs={6} sm={4} md={4}>
                 <Dish
                   dishId={d.id}
@@ -101,6 +111,7 @@ const Menu = () => {
                   glutenFree={d.glutenFree}
                   spicyLevel={d.spicyLevel}
                   sideCategoryId={sideCategoryId}
+                  isAddOn={d.categoryId === addOnCategoryId}
                 />
               </Grid>
             ))}
