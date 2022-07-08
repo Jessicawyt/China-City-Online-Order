@@ -54,47 +54,96 @@ const handlePayload = (payload, stateArr, operation) => {
   // ...     - the new diffrent dish will be added to/removed from the array in each iteration
   // ...     - the length of the array will increase by 1 which will trigger the loop again if we are adding a new dish
   let updatedItemCount = 0;
-  let index = undefined;
   let exists = false;
+  let index = undefined;
   // Loop through cartItems to see if the new dish exists and ...
   // ... change the value of exists accordingly.
   // If it exists, find the dish index in the array
-  stateArr.forEach((dish) => {
+  stateArr.forEach((dish, i) => {
     updatedItemCount += dish.qty;
     if (dish.side) {
       updatedItemCount += dish.side.qty;
     }
-    if (payload.id.toString() === dish.id.toString()) {
+    if (payload.identifier === dish.identifier) {
       exists = true;
-      index = stateArr.indexOf(dish);
+      index = i;
     }
   });
 
   // If there is an index value, increase/decrease the qty property of the dish object based on action(operation)
   // If the new dish doesn't exist, push the new dish object into the array, remove logic could be ignored because ...
   // ... the dispatch method won't be called in the first place
+
   if (exists && operation === 'ADD' && payload.side) {
     stateArr[index].qty = stateArr[index].qty + payload.qty;
+    stateArr[index].side.qty += payload.side.qty;
     updatedItemCount += payload.qty * 2;
   } else if (exists && operation === 'ADD' && !payload.side) {
     stateArr[index].qty = stateArr[index].qty + payload.qty;
     updatedItemCount += payload.qty;
-  } else if (exists && operation === 'UPDATE' && payload.side) {
-    let sideQty = stateArr[index].side ? stateArr[index].side.qty : 0;
+  } else if (
+    exists &&
+    operation === 'UPDATE' &&
+    payload.side &&
+    payload.identifier.endsWith(payload.side.id.toString())
+  ) {
+    let sideQty = stateArr[index].side.qty;
     updatedItemCount -= stateArr[index].qty + sideQty;
     stateArr[index].qty = payload.qty;
-    if (stateArr[index].side) {
-      stateArr[index].side = payload.side;
+    stateArr[index].side = payload.side;
+    updatedItemCount += payload.qty * 2;
+  } else if (
+    exists &&
+    operation === 'UPDATE' &&
+    payload.side &&
+    !payload.identifier.endsWith(payload.side.id.toString())
+  ) {
+    let sideQty = stateArr[index].side ? stateArr[index].side.qty : 0;
+    updatedItemCount -= stateArr[index].qty + sideQty;
+    let updatedIdentifier =
+      stateArr[index].id.toString() + payload.side.id.toString();
+    const i = stateArr.findIndex((d) => d.identifier === updatedIdentifier);
+    if (i !== -1) {
+      stateArr[i].qty = payload.qty;
+      stateArr[i].side.qty = payload.side.qty;
     } else {
-      stateArr[index].side = payload.side;
+      const updatedPayload = { ...payload, identifier: updatedIdentifier };
+
+      console.log(updatedPayload);
+
+      stateArr.push(updatedPayload);
+      stateArr = stateArr.splice(index, 1);
     }
     updatedItemCount += payload.qty * 2;
-  } else if (exists && operation === 'UPDATE' && !payload.side) {
+  } else if (
+    exists &&
+    operation === 'UPDATE' &&
+    !payload.side &&
+    payload.identifier.endsWith('NoSide')
+  ) {
+    updatedItemCount -= stateArr[index].qty;
+    stateArr[index].qty = payload.qty;
+    updatedItemCount += payload.qty;
+  } else if (
+    exists &&
+    operation === 'UPDATE' &&
+    !payload.side &&
+    !payload.identifier.endsWith('NoSide')
+  ) {
     let sideQty = stateArr[index].side ? stateArr[index].side.qty : 0;
     updatedItemCount -= stateArr[index].qty + sideQty;
-    stateArr[index].qty = payload.qty;
-    if (stateArr[index].side) {
-      delete stateArr[index].side;
+    // find if new identifier exists in stateArr
+    const updatedIdentifier = payload.id.toString() + 'NoSide';
+    let i = stateArr.findIndex((d) => d.identifier === updatedIdentifier);
+    // if exists, there is no side, update the dish quantity
+    if (i !== -1) {
+      stateArr[i].qty = payload.qty;
+    }
+    // if not, push it to stateArr
+    else {
+      const updatedPayload = { ...payload, identifier: updatedIdentifier };
+      stateArr.push(updatedPayload);
+      stateArr.splice(index, 1);
     }
     updatedItemCount += payload.qty;
   } else if (!exists && operation === 'ADD') {
@@ -102,7 +151,7 @@ const handlePayload = (payload, stateArr, operation) => {
     let sideQty = payload.side ? payload.side.qty : 0;
     updatedItemCount += payload.qty + sideQty;
   } else if (exists && operation === 'REMOVEFROMORDER') {
-    let sideQty = payload.side ? payload.side.qty : 0;
+    let sideQty = stateArr[index].side ? stateArr[index].side.qty : 0;
     stateArr = stateArr.splice(index, 1);
     updatedItemCount -= payload.qty + sideQty;
   }

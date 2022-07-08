@@ -40,6 +40,7 @@ const Popup = (props) => {
     side,
     quantity,
     isAddOn,
+    dishIdentifier,
   } = props;
 
   const dispatch = useDispatch();
@@ -63,21 +64,8 @@ const Popup = (props) => {
     }
   };
 
-  // useEffect(() => {
-  //   // if user resets the cart, qty should be set to zero
-  //   if (cartItems.length === 0) {
-  //     setQty(0);
-  //   }
-  //   // If there are already dishes in the cart, qty should start with it's qty saved in the store
-  //   for (var i = 0; i < cartItems.length; i++) {
-  //     if (name === cartItems[i].name) {
-  //       setQty(cartItems[i].qty);
-  //     }
-  //   }
-  //   return () => {};
-  // }, [cartItems, name]);
-
   const handleAddItem = () => {
+    // if there is side chosen
     if (sideId.length > 0 && sideId[0] !== 'NoSide') {
       handleClose();
       // find the side chosed by its id(local state side)
@@ -86,8 +74,11 @@ const Popup = (props) => {
       );
       // add qty property to the obj
       sideObj = { ...sideObj, qty: qty };
+
+      console.log(dishId.toString() + sideId.toString());
       dispatch(
         addItem({
+          identifier: dishId.toString() + sideId.toString(),
           id: dishId,
           name,
           price,
@@ -101,10 +92,13 @@ const Popup = (props) => {
         })
       );
     }
+    // if "NoSide" is chosen
     if (sideId.length > 0 && sideId[0] === 'NoSide') {
       handleClose();
+      console.log(dishId.toString() + sideId.toString());
       dispatch(
         addItem({
+          identifier: dishId.toString() + sideId.toString(),
           id: dishId,
           name,
           price,
@@ -131,24 +125,73 @@ const Popup = (props) => {
 
   const handleUpdateCart = () => {
     handleClose();
-    // if there is no side
-    if (sideId[0] === 'NoSide' || sideId === []) {
+    // if there is a side and the side is not the same, and it's 'NoSide', find the new itentifier
+    if (
+      sideId.length > 0 &&
+      sideId[0] === 'NoSide' &&
+      dishId.toString() + sideId[0] !== dishIdentifier
+    ) {
       dispatch(
         updateItem({
+          identifier: dishIdentifier,
           id: dishId,
+          name,
+          price,
           qty,
         })
       );
-    } else {
+    }
+    // if there is a side and the side is the same, and it's 'NoSide', update qty
+    if (
+      sideId.length > 0 &&
+      sideId[0] === 'NoSide' &&
+      dishId.toString() + sideId[0] === dishIdentifier
+    ) {
+      console.log('same no side');
+      dispatch(
+        updateItem({
+          identifier: dishIdentifier,
+          id: dishId,
+          name,
+          price,
+          qty,
+        })
+      );
+    }
+    // if there is a side and the side stays the same, add the side, update the qty
+    if (sideId.length > 0 && dishId.toString() + sideId[0] === dishIdentifier) {
       let sideObj = sidesData.find(
         (s) => s.id.toString() === sideId[0].toString()
       );
       sideObj = { ...sideObj, qty };
-      console.log(sideObj);
       dispatch(
         updateItem({
+          identifier: dishIdentifier,
+          id: dishId,
+          name,
+          price,
+          qty,
+          side: sideObj,
+        })
+      );
+    }
+    // if there is a side and the side is not the same, pass the old itentifier, add the new side
+    if (
+      sideId.length > 0 &&
+      sideId[0] !== 'NoSide' &&
+      dishId.toString() + sideId[0] !== dishIdentifier
+    ) {
+      let sideObj = sidesData.find(
+        (s) => s.id.toString() === sideId[0].toString()
+      );
+      sideObj = { ...sideObj, qty };
+      dispatch(
+        updateItem({
+          identifier: dishIdentifier,
           id: dishId,
           qty,
+          name,
+          price,
           side: sideObj,
         })
       );

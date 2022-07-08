@@ -35,6 +35,7 @@ const OrderSummary = (props) => {
   // remove the object that contains this dish name from cartItems
   // update itemCount
   const handleRemoveDish = (
+    identifier,
     id,
     name,
     qty,
@@ -47,6 +48,7 @@ const OrderSummary = (props) => {
   ) => {
     dispatch(
       removeItemFromOrder({
+        identifier,
         id,
         name,
         qty,
@@ -61,6 +63,7 @@ const OrderSummary = (props) => {
   };
 
   const handleEdit = (
+    identifier,
     id,
     name,
     qty,
@@ -73,6 +76,7 @@ const OrderSummary = (props) => {
     side
   ) => {
     setDishData({
+      identifier,
       id,
       name,
       qty,
@@ -102,7 +106,7 @@ const OrderSummary = (props) => {
         <section className="cart-list">
           {cartItems.length > 0 &&
             cartItems.map((i) => (
-              <Stack key={i.name} direction="column">
+              <Stack key={i.identifier} direction="column">
                 <Stack direction="row" spacing={3}>
                   {<Typography>{i.qty}</Typography>}
                   {<Typography>{i.name}</Typography>}
@@ -120,6 +124,7 @@ const OrderSummary = (props) => {
                   <Button
                     onClick={() =>
                       handleEdit(
+                        i.identifier,
                         i.id,
                         i.name,
                         i.qty,
@@ -138,6 +143,7 @@ const OrderSummary = (props) => {
                   <Button
                     onClick={() =>
                       handleRemoveDish(
+                        i.identifier,
                         i.id,
                         i.name,
                         i.qty,
@@ -178,6 +184,7 @@ const OrderSummary = (props) => {
           sidesData={sidesData}
           isEditPopup={openEditPopup}
           dishId={dishData.id}
+          dishIdentifier={dishData.identifier}
           quantity={dishData.qty}
           side={dishData.side ? dishData.side : 'NoSide'}
         />
