@@ -20,7 +20,7 @@ const Cart = () => {
         <section className="cart-list">
           {cartItems.length > 0 &&
             cartItems.map((i) => (
-              <div className="cart-list-item" key={i.name}>
+              <div className="cart-list-item" key={i.identifier}>
                 {<span>{i.name}</span>}
                 {<span>x</span>}
                 {<span>{i.qty}</span>}

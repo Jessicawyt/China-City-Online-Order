@@ -185,6 +185,7 @@ const Popup = (props) => {
         (s) => s.id.toString() === sideId[0].toString()
       );
       sideObj = { ...sideObj, qty };
+      console.log(sideObj);
       dispatch(
         updateItem({
           identifier: dishIdentifier,
