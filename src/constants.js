@@ -1,4 +1,5 @@
-import { createTheme, colors } from '@mui/material';
+import React from 'react';
+import { createTheme, colors, Slide } from '@mui/material';
 
 export const theme = createTheme({
   palette: {
@@ -6,4 +7,10 @@ export const theme = createTheme({
       main: colors.brown[50],
     },
   },
+});
+
+export const transition = React.forwardRef((props, ref) => {
+  return (
+    <Slide direction="up" mountOnEnter unmountOnExit ref={ref} {...props} />
+  );
 });

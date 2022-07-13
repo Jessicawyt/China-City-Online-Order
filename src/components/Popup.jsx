@@ -16,7 +16,7 @@ import {
   DialogActions,
   Button,
   IconButton,
-  Slide,
+  Radio,
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -43,6 +43,7 @@ const Popup = (props) => {
     quantity,
     comesWithSide,
     dishIdentifier,
+    transition,
   } = props;
 
   const dispatch = useDispatch();
@@ -95,12 +96,18 @@ const Popup = (props) => {
       );
     }
     // if "NoSide" is chosen
-    if (sideId.length > 0 && sideId[0] === 'NoSide') {
+    // OR a sideless dish is chosen
+    if (
+      (sideId.length > 0 && sideId[0] === 'NoSide') ||
+      (sideId.length === 0 && !comesWithSide)
+    ) {
       handleClose();
-      console.log(dishId.toString() + sideId.toString());
+      const identifier = !comesWithSide
+        ? dishId.toString() + 'NoSide'
+        : dishId.toString() + sideId.toString();
       dispatch(
         addItem({
-          identifier: dishId.toString() + sideId.toString(),
+          identifier,
           id: dishId,
           name,
           price,
@@ -113,6 +120,9 @@ const Popup = (props) => {
           comesWithSide,
         })
       );
+    }
+    if (sideId.length === 0 && !comesWithSide) {
+      console.log('button is abled');
     }
   };
 
@@ -213,15 +223,11 @@ const Popup = (props) => {
     return n;
   };
 
-  const Transition = React.forwardRef((props, ref) => {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
-
   return (
     <Dialog
       open={openPopup}
       onClose={handleClose}
-      TransitionComponent={Transition}
+      TransitionComponent={transition}
       keepMounted
     >
       <DialogTitle>{name}</DialogTitle>
@@ -250,13 +256,9 @@ const Popup = (props) => {
                       label={s.name}
                       value={s.id.toString()}
                       control={
-                        <Checkbox
+                        <Radio
                           checked={sideId.includes(s.id.toString())}
                           onChange={handleChange}
-                          disabled={
-                            sideId.length === 1 &&
-                            !sideId.includes(s.id.toString())
-                          }
                         />
                       }
                     />
@@ -271,12 +273,9 @@ const Popup = (props) => {
                   label="No side"
                   value="NoSide"
                   control={
-                    <Checkbox
+                    <Radio
                       checked={sideId.includes('NoSide')}
                       onChange={handleChange}
-                      disabled={
-                        sideId.length === 1 && !sideId.includes('NoSide')
-                      }
                     />
                   }
                 />
@@ -318,7 +317,12 @@ const Popup = (props) => {
         </Box>
 
         {!isEditPopup && (
-          <Button variant="contained" color="secondary" onClick={handleAddItem}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleAddItem}
+            disabled={sideId.length === 0 && comesWithSide}
+          >
             Add To Order
           </Button>
         )}
@@ -328,6 +332,7 @@ const Popup = (props) => {
             variant="contained"
             color="secondary"
             onClick={handleUpdateCart}
+            disabled={sideId.length === 0 && comesWithSide}
           >
             Update Cart
           </Button>

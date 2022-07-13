@@ -14,9 +14,9 @@ import { GiChiliPepper } from 'react-icons/gi';
 // import { faSave } from '@fortawesome/free-regular-svg-icons';
 
 // Local Imports
-import { addItem, removeItem } from '../features/cartSlice';
 import Popup from './Popup';
 import { useGetDishesByCategoryQuery } from '../features/dishesApi';
+import { transition } from '../constants';
 
 const Dish = (props) => {
   const {
@@ -185,6 +185,7 @@ const Dish = (props) => {
           dishId={dishId}
           quantity={1}
           comesWithSide={comesWithSide}
+          transition={transition}
         />
       )}
     </>

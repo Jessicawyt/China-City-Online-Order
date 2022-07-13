@@ -7,6 +7,7 @@ import { removeItemFromOrder, removeItem } from '../features/cartSlice';
 import { useGetDishQuery } from '../features/dishesApi';
 import Popup from './Popup';
 import { useGetDishesByCategoryQuery } from '../features/dishesApi';
+import { transition } from '../constants';
 
 const OrderSummary = (props) => {
   const { sideCategoryId } = props;
@@ -193,6 +194,7 @@ const OrderSummary = (props) => {
           quantity={dishData.qty}
           side={dishData.side ? dishData.side : 'NoSide'}
           comesWithSide={dishData.comesWithSide}
+          transition={transition}
         />
       )}
     </div>
