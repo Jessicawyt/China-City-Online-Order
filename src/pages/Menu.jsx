@@ -23,7 +23,7 @@ const Menu = () => {
 
   // get side categoryId for customization in Popup
   const sideCategoryId = dataCategory?.find((c) => c.category === 'Side').id;
-  const addOnCategoryId = dataCategory?.find((c) => c.category === 'Add-on').id;
+  // get addOn categoryId for conditional rendering of sides in Popup
 
   const filterCategories = dataCategory?.filter((c) => c.id !== sideCategoryId);
   const filteredDataDishes = dataDishes?.filter(
@@ -92,7 +92,7 @@ const Menu = () => {
                   glutenFree={d.glutenFree}
                   spicyLevel={d.spicyLevel}
                   sideCategoryId={sideCategoryId}
-                  isAddOn={d.categoryId === addOnCategoryId}
+                  comesWithSide={d.comesWithSide}
                 />
               </Grid>
             ))}
@@ -111,7 +111,7 @@ const Menu = () => {
                   glutenFree={d.glutenFree}
                   spicyLevel={d.spicyLevel}
                   sideCategoryId={sideCategoryId}
-                  isAddOn={d.categoryId === addOnCategoryId}
+                  comesWithSide={d.comesWithSide}
                 />
               </Grid>
             ))}

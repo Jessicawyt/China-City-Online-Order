@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   DialogTitle,
   Dialog,
@@ -15,6 +16,7 @@ import {
   DialogActions,
   Button,
   IconButton,
+  Slide,
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -39,7 +41,7 @@ const Popup = (props) => {
     dishId,
     side,
     quantity,
-    isAddOn,
+    comesWithSide,
     dishIdentifier,
   } = props;
 
@@ -54,7 +56,7 @@ const Popup = (props) => {
   );
 
   const handleChange = (e) => {
-    //if the side is chosen, remove it from array
+    // if the side is chosen, remove it from array
     if (sideId.includes(e.target.value)) {
       setSideId([]);
     }
@@ -75,7 +77,6 @@ const Popup = (props) => {
       // add qty property to the obj
       sideObj = { ...sideObj, qty: qty };
 
-      console.log(dishId.toString() + sideId.toString());
       dispatch(
         addItem({
           identifier: dishId.toString() + sideId.toString(),
@@ -88,6 +89,7 @@ const Popup = (props) => {
           ContainsAllergy,
           glutenFree,
           spicyLevel,
+          comesWithSide,
           side: sideObj,
         })
       );
@@ -108,6 +110,7 @@ const Popup = (props) => {
           ContainsAllergy,
           glutenFree,
           spicyLevel,
+          comesWithSide,
         })
       );
     }
@@ -210,13 +213,22 @@ const Popup = (props) => {
     return n;
   };
 
+  const Transition = React.forwardRef((props, ref) => {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
+
   return (
-    <Dialog open={openPopup} onClose={handleClose}>
+    <Dialog
+      open={openPopup}
+      onClose={handleClose}
+      TransitionComponent={Transition}
+      keepMounted
+    >
       <DialogTitle>{name}</DialogTitle>
       <DialogContent>
         {description && <DialogContentText>{description}</DialogContentText>}
 
-        {!isAddOn && (
+        {comesWithSide && (
           <Stack direction="column">
             <FormControl>
               <Stack direction="row" sx={{ alignItems: 'center' }}>

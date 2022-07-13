@@ -30,7 +30,7 @@ const Dish = (props) => {
     spicyLevel,
     sideCategoryId,
     dishId,
-    isAddOn,
+    comesWithSide,
   } = props;
 
   const [popupOpen, setPopupOpen] = useState(false);
@@ -184,7 +184,7 @@ const Dish = (props) => {
           isEditPopup={!popupOpen}
           dishId={dishId}
           quantity={1}
-          isAddOn={isAddOn}
+          comesWithSide={comesWithSide}
         />
       )}
     </>

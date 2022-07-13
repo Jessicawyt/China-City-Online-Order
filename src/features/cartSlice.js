@@ -110,11 +110,13 @@ const handlePayload = (payload, stateArr, operation) => {
     if (i !== -1) {
       stateArr[i].qty += payload.qty;
       stateArr[i].side.qty += payload.side.qty;
+      stateArr = stateArr.splice(index, 1);
     } else {
-      const updatedPayload = { ...payload, identifier: updatedIdentifier };
-      stateArr.push(updatedPayload);
+      stateArr[index].identifier = updatedIdentifier;
+      stateArr[index].qty = payload.qty;
+      stateArr[index].side = payload.side;
     }
-    stateArr = stateArr.splice(index, 1);
+
     updatedItemCount += payload.qty * 2;
     // if user is only updating the qty of a sideless order/orders
   } else if (
@@ -141,13 +143,15 @@ const handlePayload = (payload, stateArr, operation) => {
     // if exists, there is no side, simply update the dish quantity
     if (i !== -1) {
       stateArr[i].qty += payload.qty;
+      stateArr.splice(index, 1);
     }
     // if not, push it to stateArr
     else {
-      const updatedPayload = { ...payload, identifier: updatedIdentifier };
-      stateArr.push(updatedPayload);
+      stateArr[index].qty = payload.qty;
+      stateArr[index].identifier = updatedIdentifier;
+      delete stateArr[index].side;
     }
-    stateArr.splice(index, 1);
+
     updatedItemCount += payload.qty;
   } else if (!exists && operation === 'ADD') {
     stateArr.push(payload);

@@ -73,7 +73,8 @@ const OrderSummary = (props) => {
     ContainsAllergy,
     glutenFree,
     spicyLevel,
-    side
+    side,
+    comesWithSide
   ) => {
     setDishData({
       identifier,
@@ -87,7 +88,9 @@ const OrderSummary = (props) => {
       glutenFree,
       spicyLevel,
       side,
+      comesWithSide,
     });
+
     setOpenEditPopup(true);
   };
 
@@ -134,7 +137,8 @@ const OrderSummary = (props) => {
                         i.ContainsAllergy,
                         i.glutenFree,
                         i.spicyLevel,
-                        i.side
+                        i.side,
+                        i.comesWithSide
                       )
                     }
                   >
@@ -152,7 +156,8 @@ const OrderSummary = (props) => {
                         i.isVegan,
                         i.ContainsAllergy,
                         i.glutenFree,
-                        i.spicyLevel
+                        i.spicyLevel,
+                        i.comesWithSide
                       )
                     }
                   >
@@ -187,6 +192,7 @@ const OrderSummary = (props) => {
           dishIdentifier={dishData.identifier}
           quantity={dishData.qty}
           side={dishData.side ? dishData.side : 'NoSide'}
+          comesWithSide={dishData.comesWithSide}
         />
       )}
     </div>
