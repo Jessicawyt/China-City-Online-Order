@@ -14,3 +14,14 @@ export const transition = React.forwardRef((props, ref) => {
     <Slide direction="up" mountOnEnter unmountOnExit ref={ref} {...props} />
   );
 });
+
+// 3 => 3.00
+export const formatNumber = (n) => {
+  n = n.toString();
+  if (n.includes('.') && !n.endsWith('0')) {
+    n += '0';
+  } else {
+    n += '.00';
+  }
+  return n;
+};

@@ -23,6 +23,14 @@ a {
   }
 }
 
+.Menu-Grid {
+  width: 50%;
+}
+
+.Order-Sum {
+  width: 50%;
+}
+
 .cart-page {
   /* background-color: black;
   color: white; */

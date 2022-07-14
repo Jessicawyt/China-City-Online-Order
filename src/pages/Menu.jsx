@@ -23,7 +23,6 @@ const Menu = () => {
 
   // get side categoryId for customization in Popup
   const sideCategoryId = dataCategory?.find((c) => c.category === 'Side').id;
-  // get addOn categoryId for conditional rendering of sides in Popup
 
   const filterCategories = dataCategory?.filter((c) => c.id !== sideCategoryId);
   const filteredDataDishes = dataDishes?.filter(
@@ -76,7 +75,7 @@ const Menu = () => {
         <Grid
           container
           spacing={3}
-          sx={{ paddingLeft: '10px', paddingRight: '10px' }}
+          sx={{ paddingLeft: '10px', paddingRight: '10px', width: '65%' }}
         >
           {val !== 0 &&
             categorizedDishes?.map((d) => (

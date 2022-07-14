@@ -1,13 +1,26 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Stack, Typography } from '@mui/material';
-import { selectUnstyledClasses } from '@mui/base';
+import {
+  Button,
+  Stack,
+  Typography,
+  Grid,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  List,
+  ListItem,
+  ListItemText,
+} from '@mui/material';
 import { useState } from 'react';
 // Local Imports
-import { removeItemFromOrder, removeItem } from '../features/cartSlice';
-import { useGetDishQuery } from '../features/dishesApi';
+import { removeItemFromOrder } from '../features/cartSlice';
 import Popup from './Popup';
 import { useGetDishesByCategoryQuery } from '../features/dishesApi';
 import { transition } from '../constants';
+import { formatNumber } from '../constants';
 
 const OrderSummary = (props) => {
   const { sideCategoryId } = props;
@@ -95,79 +108,99 @@ const OrderSummary = (props) => {
     setOpenEditPopup(true);
   };
 
-  // const handleRemoveItem = () => {
-  //   if (qty >= 1) {
-  //     dispatch(removeItem({ name, price, qty: 1 }));
-  //   }
-  // };
-
   return (
-    <div className="cart-page">
-      <section className="cart-header">
-        <h3>Order Summary</h3>
-      </section>
-      <div className="cart-main">
-        <section className="cart-list">
-          {cartItems.length > 0 &&
-            cartItems.map((i) => (
-              <Stack key={i.identifier} direction="column">
-                <Stack direction="row" spacing={3}>
-                  {<Typography>{i.qty}</Typography>}
-                  {<Typography>{i.name}</Typography>}
-                </Stack>
+    <Stack direction="column" sx={{ padding: '0 1rem' }}>
+      <Typography variant="h6">Order Summary</Typography>
 
-                {i.side && (
-                  <Stack direction="row" spacing={3}>
-                    <Typography>-</Typography>
-                    <Typography>{i.side.qty}</Typography>
-                    <Typography>{i.side.name}</Typography>
-                  </Stack>
-                )}
+      <div>
+        <TableContainer>
+          <Table>
+            <TableBody>
+              {cartItems.length > 0 &&
+                cartItems.map((i) => (
+                  <TableRow
+                    key={i.identifier}
+                    sx={{ verticalAlign: 'text-top' }}
+                  >
+                    <TableCell>{i.qty}</TableCell>
+                    <TableCell>
+                      <List>
+                        <ListItem disablePadding>
+                          <ListItemText primary={i.name} />
+                        </ListItem>
+                        {i.side && (
+                          <ListItem disablePadding>
+                            <ListItemText primary={i.side.name} />
+                          </ListItem>
+                        )}
+                        <ListItem disablePadding>
+                          <List component={Stack} direction="row">
+                            <ListItem
+                              secondaryAction={
+                                <Button
+                                  onClick={() =>
+                                    handleEdit(
+                                      i.identifier,
+                                      i.id,
+                                      i.name,
+                                      i.qty,
+                                      i.price,
+                                      i.description,
+                                      i.isVegan,
+                                      i.ContainsAllergy,
+                                      i.glutenFree,
+                                      i.spicyLevel,
+                                      i.side,
+                                      i.comesWithSide
+                                    )
+                                  }
+                                >
+                                  Edit
+                                </Button>
+                              }
+                            />
+                            <ListItem
+                              secondaryAction={
+                                <Button
+                                  onClick={() =>
+                                    handleRemoveDish(
+                                      i.identifier,
+                                      i.id,
+                                      i.name,
+                                      i.qty,
+                                      i.price,
+                                      i.description,
+                                      i.isVegan,
+                                      i.ContainsAllergy,
+                                      i.glutenFree,
+                                      i.spicyLevel,
+                                      i.comesWithSide
+                                    )
+                                  }
+                                >
+                                  Remove
+                                </Button>
+                              }
+                            />
+                          </List>
+                        </ListItem>
+                      </List>
+                    </TableCell>
 
-                <Stack direction="row">
-                  <Button
-                    onClick={() =>
-                      handleEdit(
-                        i.identifier,
-                        i.id,
-                        i.name,
-                        i.qty,
-                        i.price,
-                        i.description,
-                        i.isVegan,
-                        i.ContainsAllergy,
-                        i.glutenFree,
-                        i.spicyLevel,
-                        i.side,
-                        i.comesWithSide
-                      )
-                    }
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    onClick={() =>
-                      handleRemoveDish(
-                        i.identifier,
-                        i.id,
-                        i.name,
-                        i.qty,
-                        i.price,
-                        i.description,
-                        i.isVegan,
-                        i.ContainsAllergy,
-                        i.glutenFree,
-                        i.spicyLevel,
-                        i.comesWithSide
-                      )
-                    }
-                  >
-                    Remove
-                  </Button>
-                </Stack>
-              </Stack>
-            ))}
-        </section>
+                    <TableCell>
+                      {i.side
+                        ? `$${(
+                            (Number(i.price) + Number(i.side.price)) *
+                            i.qty
+                          ).toFixed(2)}`
+                        : `$${(Number(i.price) * i.qty).toFixed(2)}`}
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
         <section className="cart-bottom">
           <p className="cart-item-count">{itemCount} Items</p>
           <div className="cart-total">
@@ -176,6 +209,7 @@ const OrderSummary = (props) => {
           </div>
         </section>
       </div>
+
       {openEditPopup && dishData && sidesData && (
         <Popup
           openPopup={openEditPopup}
@@ -197,7 +231,7 @@ const OrderSummary = (props) => {
           transition={transition}
         />
       )}
-    </div>
+    </Stack>
   );
 };
 

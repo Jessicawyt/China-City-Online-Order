@@ -6,7 +6,6 @@ import {
   DialogContentText,
   Skeleton,
   Stack,
-  Checkbox,
   FormControl,
   FormLabel,
   FormGroup,
@@ -212,17 +211,6 @@ const Popup = (props) => {
     }
   };
 
-  // 3 => 3.00
-  const formatNumber = (n) => {
-    n = n.toString();
-    if (n.includes('.') && !n.endsWith('0')) {
-      n += '0';
-    } else {
-      n += '.00';
-    }
-    return n;
-  };
-
   return (
     <Dialog
       open={openPopup}
@@ -263,7 +251,7 @@ const Popup = (props) => {
                       }
                     />
                     <Typography variant="subtitle1" component="span">
-                      {s.isFree ? '-' : '$' + formatNumber(s.price)}
+                      {s.isFree ? '-' : '$' + s.price.toFixed(2)}
                     </Typography>
                   </Stack>
                 ))}

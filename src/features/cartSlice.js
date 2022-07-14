@@ -78,7 +78,7 @@ const handlePayload = (payload, stateArr, operation) => {
   if (exists && operation === 'ADD' && payload.side) {
     stateArr[index].qty = stateArr[index].qty + payload.qty;
     stateArr[index].side.qty += payload.side.qty;
-    updatedItemCount += payload.qty * 2;
+    updatedItemCount += payload.qty;
     // if user is adding an order/orders without side
   } else if (exists && operation === 'ADD' && !payload.side) {
     stateArr[index].qty = stateArr[index].qty + payload.qty;
@@ -90,11 +90,10 @@ const handlePayload = (payload, stateArr, operation) => {
     payload.side &&
     payload.identifier.endsWith(payload.side.id.toString())
   ) {
-    let sideQty = stateArr[index].side.qty;
-    updatedItemCount -= stateArr[index].qty + sideQty;
+    updatedItemCount -= stateArr[index].qty;
     stateArr[index].qty = payload.qty;
     stateArr[index].side = payload.side;
-    updatedItemCount += payload.qty * 2;
+    updatedItemCount += payload.qty;
     // if user is updating an order/orders to a different side
   } else if (
     exists &&
@@ -102,8 +101,7 @@ const handlePayload = (payload, stateArr, operation) => {
     payload.side &&
     !payload.identifier.endsWith(payload.side.id.toString())
   ) {
-    let sideQty = stateArr[index].side ? stateArr[index].side.qty : 0;
-    updatedItemCount -= stateArr[index].qty + sideQty;
+    updatedItemCount -= stateArr[index].qty;
     let updatedIdentifier =
       stateArr[index].id.toString() + payload.side.id.toString();
     const i = stateArr.findIndex((d) => d.identifier === updatedIdentifier);
@@ -117,7 +115,7 @@ const handlePayload = (payload, stateArr, operation) => {
       stateArr[index].side = payload.side;
     }
 
-    updatedItemCount += payload.qty * 2;
+    updatedItemCount += payload.qty;
     // if user is only updating the qty of a sideless order/orders
   } else if (
     exists &&
@@ -135,8 +133,8 @@ const handlePayload = (payload, stateArr, operation) => {
     !payload.side &&
     !payload.identifier.endsWith('NoSide')
   ) {
-    let sideQty = stateArr[index].side ? stateArr[index].side.qty : 0;
-    updatedItemCount -= stateArr[index].qty + sideQty;
+    // let sideQty = stateArr[index].side ? stateArr[index].side.qty : 0;
+    updatedItemCount -= stateArr[index].qty;
     // find if new identifier exists in stateArr
     const updatedIdentifier = payload.id.toString() + 'NoSide';
     let i = stateArr.findIndex((d) => d.identifier === updatedIdentifier);
@@ -151,22 +149,18 @@ const handlePayload = (payload, stateArr, operation) => {
       stateArr[index].identifier = updatedIdentifier;
       delete stateArr[index].side;
     }
-
     updatedItemCount += payload.qty;
   } else if (!exists && operation === 'ADD') {
     stateArr.push(payload);
-    let sideQty = payload.side ? payload.side.qty : 0;
-    updatedItemCount += payload.qty + sideQty;
+    updatedItemCount += payload.qty;
   } else if (exists && operation === 'REMOVEFROMORDER') {
-    let sideQty = stateArr[index].side ? stateArr[index].side.qty : 0;
     stateArr = stateArr.splice(index, 1);
-    updatedItemCount -= payload.qty + sideQty;
+    updatedItemCount -= payload.qty;
   }
   // If it is the first item adding to the cart
   if (stateArr.length === 0 && operation === 'ADD') {
-    let sideQty = payload.side ? payload.side.qty : 0;
     stateArr.push(payload);
-    updatedItemCount += payload.qty + sideQty;
+    updatedItemCount += payload.qty;
   }
   return updatedItemCount;
 };
