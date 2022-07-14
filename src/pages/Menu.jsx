@@ -5,6 +5,7 @@ import { useGetDishesQuery } from '../features/dishesApi';
 import { useGetCategoriesQuery } from '../features/categoriesApi';
 import Dish from '../components/Dish';
 import OrderSummary from '../components/OrderSummary';
+import CategoryTabs from '../components/CategoryTabs';
 
 const Menu = () => {
   // In order to show all dishes and all categories data, 2 seperate api calls are needed
@@ -46,7 +47,14 @@ const Menu = () => {
 
   return (
     <Stack direction="column">
-      <Tabs
+      <CategoryTabs
+        filterCategories={filterCategories}
+        val={val}
+        handleOnChange={(e, newVal) => setVal(newVal)}
+        setCategorizedDishes={() => setCategorizedDishes(dataDishes)}
+        categorizeDishes={categorizeDishes}
+      />
+      {/* <Tabs
         position="sticky"
         textColor="secondary"
         indicatorColor="secondary"
@@ -69,7 +77,7 @@ const Menu = () => {
             onClick={() => categorizeDishes(d.id)}
           />
         ))}
-      </Tabs>
+      </Tabs> */}
 
       <Stack direction="row">
         <Grid

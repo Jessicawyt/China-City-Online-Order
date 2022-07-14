@@ -20,7 +20,6 @@ import { removeItemFromOrder } from '../features/cartSlice';
 import Popup from './Popup';
 import { useGetDishesByCategoryQuery } from '../features/dishesApi';
 import { transition } from '../constants';
-import { formatNumber } from '../constants';
 
 const OrderSummary = (props) => {
   const { sideCategoryId } = props;
@@ -134,55 +133,59 @@ const OrderSummary = (props) => {
                           </ListItem>
                         )}
                         <ListItem disablePadding>
-                          <List component={Stack} direction="row">
-                            <ListItem
-                              secondaryAction={
-                                <Button
-                                  onClick={() =>
-                                    handleEdit(
-                                      i.identifier,
-                                      i.id,
-                                      i.name,
-                                      i.qty,
-                                      i.price,
-                                      i.description,
-                                      i.isVegan,
-                                      i.ContainsAllergy,
-                                      i.glutenFree,
-                                      i.spicyLevel,
-                                      i.side,
-                                      i.comesWithSide
-                                    )
-                                  }
-                                >
-                                  Edit
-                                </Button>
-                              }
-                            />
-                            <ListItem
-                              secondaryAction={
-                                <Button
-                                  onClick={() =>
-                                    handleRemoveDish(
-                                      i.identifier,
-                                      i.id,
-                                      i.name,
-                                      i.qty,
-                                      i.price,
-                                      i.description,
-                                      i.isVegan,
-                                      i.ContainsAllergy,
-                                      i.glutenFree,
-                                      i.spicyLevel,
-                                      i.comesWithSide
-                                    )
-                                  }
-                                >
-                                  Remove
-                                </Button>
-                              }
-                            />
-                          </List>
+                          <Button
+                            sx={{
+                              display: 'inline-block',
+                              padding: 0,
+                              minHeight: 0,
+                              minWidth: 0,
+                              marginRight: '16px',
+                            }}
+                            onClick={() =>
+                              handleEdit(
+                                i.identifier,
+                                i.id,
+                                i.name,
+                                i.qty,
+                                i.price,
+                                i.description,
+                                i.isVegan,
+                                i.ContainsAllergy,
+                                i.glutenFree,
+                                i.spicyLevel,
+                                i.side,
+                                i.comesWithSide
+                              )
+                            }
+                          >
+                            Edit
+                          </Button>
+
+                          <Button
+                            sx={{
+                              display: 'inline-block',
+                              padding: 0,
+                              minHeight: 0,
+                              minWidth: 0,
+                            }}
+                            onClick={() =>
+                              handleRemoveDish(
+                                i.identifier,
+                                i.id,
+                                i.name,
+                                i.qty,
+                                i.price,
+                                i.description,
+                                i.isVegan,
+                                i.ContainsAllergy,
+                                i.glutenFree,
+                                i.spicyLevel,
+                                i.comesWithSide
+                              )
+                            }
+                          >
+                            Remove
+                          </Button>
                         </ListItem>
                       </List>
                     </TableCell>

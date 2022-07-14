@@ -104,6 +104,7 @@ const Popup = (props) => {
       const identifier = !comesWithSide
         ? dishId.toString() + 'NoSide'
         : dishId.toString() + sideId.toString();
+      console.log(qty);
       dispatch(
         addItem({
           identifier,
@@ -119,9 +120,6 @@ const Popup = (props) => {
           comesWithSide,
         })
       );
-    }
-    if (sideId.length === 0 && !comesWithSide) {
-      console.log('button is abled');
     }
   };
 

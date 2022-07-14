@@ -61,9 +61,6 @@ const handlePayload = (payload, stateArr, operation) => {
   // If it exists, find the dish index in the array
   stateArr.forEach((dish, i) => {
     updatedItemCount += dish.qty;
-    if (dish.side) {
-      updatedItemCount += dish.side.qty;
-    }
     if (payload.identifier === dish.identifier) {
       exists = true;
       index = i;
