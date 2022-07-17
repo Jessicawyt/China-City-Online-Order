@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { resetItems } from '../features/cartSlice';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -10,13 +9,11 @@ import {
   Toolbar,
   Typography,
   Stack,
-  Tab,
-  Tabs,
+  styled,
+  Button,
 } from '@mui/material';
 
-import { theme } from '../constants';
-
-const Header = () => {
+const Header = ({ handleLogin, handleRegister }) => {
   const dispatch = useDispatch();
 
   const handleReset = () => {
@@ -28,16 +25,19 @@ const Header = () => {
   return (
     <AppBar
       position="sticky"
-      sx={{ bgcolor: theme.palette.secondary.main, marginBottom: '0px' }}
+      sx={{
+        bgcolor: 'white',
+        height: '50px',
+        justifyContent: 'center',
+        boxShadow: '0px 1px 5px 0px rgba(36,36,36,0.2)',
+      }}
     >
       <Toolbar>
-        <Typography variant="h5" component="span" sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" component="span" sx={{ flexGrow: 1 }}>
           <Link to="/">China City</Link>
         </Typography>
 
-        <Stack direction="row" spacing={3}>
-          <Link to="/dishes">Menu</Link>
-
+        <Stack direction="row" spacing={3} alignItems="center">
           <Link to="/cart">
             <Badge badgeContent={itemCount} showZero>
               <ShoppingCartIcon />
@@ -47,8 +47,35 @@ const Header = () => {
           <DeleteForeverIcon
             size="large"
             onClick={handleReset}
-            sx={{ '&:hover': { cursor: 'pointer' }, color: 'black' }}
+            sx={{
+              '&:hover': { cursor: 'pointer' },
+              color: 'black',
+            }}
           />
+
+          <Button
+            variant="text"
+            onClick={handleLogin}
+            color="primary"
+            disableRipple
+            sx={{
+              '&:hover': { backgroundColor: 'white' },
+            }}
+          >
+            Login
+          </Button>
+
+          <Button
+            variant="text"
+            onClick={handleRegister}
+            color="primary"
+            disableRipple
+            sx={{
+              '&:hover': { backgroundColor: 'white' },
+            }}
+          >
+            Create Account
+          </Button>
         </Stack>
       </Toolbar>
     </AppBar>

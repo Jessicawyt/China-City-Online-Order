@@ -3,8 +3,11 @@ import { createTheme, colors, Slide } from '@mui/material';
 
 export const theme = createTheme({
   palette: {
+    primary: {
+      main: '#000000d4',
+    },
     secondary: {
-      main: colors.brown[50],
+      main: '#ba1818e8',
     },
   },
 });

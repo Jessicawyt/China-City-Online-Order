@@ -23,6 +23,8 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 // Local Imports
 import { addItem, updateItem } from '../features/cartSlice';
+import { theme } from '../constants';
+import { transition } from '../constants';
 
 const Popup = (props) => {
   const {
@@ -42,7 +44,6 @@ const Popup = (props) => {
     quantity,
     comesWithSide,
     dishIdentifier,
-    transition,
   } = props;
 
   const dispatch = useDispatch();
@@ -225,7 +226,12 @@ const Popup = (props) => {
             <FormControl>
               <Stack direction="row" sx={{ alignItems: 'center' }}>
                 <FormLabel
-                  sx={{ flexGrow: 1, fontWeight: 'bolder', color: 'black' }}
+                  sx={{
+                    flexGrow: 1,
+                    fontWeight: 'bolder',
+                    color: 'primary',
+                    '&.Mui-focused': { color: theme.palette.secondary.norm },
+                  }}
                 >
                   Choose Your Side
                 </FormLabel>
@@ -245,6 +251,11 @@ const Popup = (props) => {
                         <Radio
                           checked={sideId.includes(s.id.toString())}
                           onChange={handleChange}
+                          sx={{
+                            '&.Mui-checked': {
+                              color: theme.palette.secondary.main,
+                            },
+                          }}
                         />
                       }
                     />
@@ -262,6 +273,11 @@ const Popup = (props) => {
                     <Radio
                       checked={sideId.includes('NoSide')}
                       onChange={handleChange}
+                      sx={{
+                        '&.Mui-checked': {
+                          color: theme.palette.secondary.main,
+                        },
+                      }}
                     />
                   }
                 />

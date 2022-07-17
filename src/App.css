@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+.App {
+  width: 100vw;
+}
+
 a {
   text-decoration: none;
   color: black;
@@ -21,49 +25,24 @@ a {
     width: 18px;
     height: 18px;
   }
+
+  /* .Order-Summary {
+    display: none;
+  } */
 }
 
-.Menu-Grid {
-  width: 50%;
+.Category-Tabs {
+  background-color: #fff;
+  z-index: 100;
+  position: sticky;
+  top: 50px;
+  height: 50px;
 }
 
-.Order-Sum {
-  width: 50%;
+.Menu-And-Order {
 }
 
-.cart-page {
-  /* background-color: black;
-  color: white; */
-  width: 400px;
-  padding: 0 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  row-gap: 1.5rem;
-}
-
-@media screen and (max-width: 500px) {
-  .cart-page {
-    top: 14%;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    row-gap: 0;
-  }
-}
-.cart-header {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
-.cart-main {
-  /* border: 1px solid white; */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: flex-start;
-  gap: 1rem;
+.Order-Summary {
 }
 
 .cart-bottom {
@@ -73,19 +52,6 @@ a {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-}
-
-.cart-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.cart-list-item {
-  font-size: 0.9rem;
-  display: grid;
-  grid-template-columns: 3fr 0.2fr 0.4fr;
-  gap: 0.4rem;
 }
 
 .cart-item-count {

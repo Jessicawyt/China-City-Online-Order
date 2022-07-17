@@ -9,30 +9,31 @@ const CategoryTabs = ({
   categorizeDishes,
 }) => {
   return (
-    <Tabs
-      position="sticky"
-      textColor="secondary"
-      indicatorColor="secondary"
-      variant="scrollable"
-      scrollButtons
-      allowScrollButtonsMobile
-      value={val}
-      onChange={handleOnChange}
-    >
-      <Tab
-        label="All"
-        sx={{ fontSize: '10px' }}
-        onClick={setCategorizedDishes}
-      />
-      {filterCategories?.map((d) => (
+    <div className="Category-Tabs">
+      <Tabs
+        textColor="secondary"
+        indicatorColor="secondary"
+        variant="scrollable"
+        scrollButtons
+        allowScrollButtonsMobile
+        value={val}
+        onChange={handleOnChange}
+      >
         <Tab
-          key={d.id}
-          label={d.category}
+          label="All"
           sx={{ fontSize: '10px' }}
-          onClick={() => categorizeDishes(d.id)}
+          onClick={setCategorizedDishes}
         />
-      ))}
-    </Tabs>
+        {filterCategories?.map((d) => (
+          <Tab
+            key={d.id}
+            label={d.category}
+            sx={{ fontSize: '10px' }}
+            onClick={() => categorizeDishes(d.id)}
+          />
+        ))}
+      </Tabs>
+    </div>
   );
 };
 

@@ -54,32 +54,8 @@ const Menu = () => {
         setCategorizedDishes={() => setCategorizedDishes(dataDishes)}
         categorizeDishes={categorizeDishes}
       />
-      {/* <Tabs
-        position="sticky"
-        textColor="secondary"
-        indicatorColor="secondary"
-        variant="scrollable"
-        scrollButtons
-        allowScrollButtonsMobile
-        value={val}
-        onChange={(e, newVal) => setVal(newVal)}
-      >
-        <Tab
-          label="All"
-          sx={{ fontSize: '10px' }}
-          onClick={() => setCategorizedDishes(dataDishes)}
-        />
-        {filterCategories?.map((d) => (
-          <Tab
-            key={d.id}
-            label={d.category}
-            sx={{ fontSize: '10px' }}
-            onClick={() => categorizeDishes(d.id)}
-          />
-        ))}
-      </Tabs> */}
 
-      <Stack direction="row">
+      <Stack direction="row" className="Menu-And-Order">
         <Grid
           container
           spacing={3}
