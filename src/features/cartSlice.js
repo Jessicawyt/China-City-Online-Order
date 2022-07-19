@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  itemCount: localStorage.getItem('itemCount')
-    ? JSON.parse(localStorage.getItem('itemCount'))
+  itemCount: sessionStorage.getItem('itemCount')
+    ? JSON.parse(sessionStorage.getItem('itemCount'))
     : 0,
-  cartItems: localStorage.getItem('cartItems')
-    ? JSON.parse(localStorage.getItem('cartItems'))
+  cartItems: sessionStorage.getItem('cartItems')
+    ? JSON.parse(sessionStorage.getItem('cartItems'))
     : [],
 };
 
@@ -15,8 +15,8 @@ const cartSlice = createSlice({
   reducers: {
     addItem: (state, action) => {
       state.itemCount = handlePayload(action.payload, state.cartItems, 'ADD');
-      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
-      localStorage.setItem('itemCount', JSON.stringify(state.itemCount));
+      sessionStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+      sessionStorage.setItem('itemCount', JSON.stringify(state.itemCount));
     },
     updateItem: (state, action) => {
       state.itemCount = handlePayload(
@@ -24,14 +24,14 @@ const cartSlice = createSlice({
         state.cartItems,
         'UPDATE'
       );
-      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
-      localStorage.setItem('itemCount', JSON.stringify(state.itemCount));
+      sessionStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+      sessionStorage.setItem('itemCount', JSON.stringify(state.itemCount));
     },
     resetItems: (state) => {
       state.itemCount = 0;
       state.cartItems = [];
-      localStorage.removeItem('cartItems');
-      localStorage.removeItem('itemCount');
+      sessionStorage.removeItem('cartItems');
+      sessionStorage.removeItem('itemCount');
     },
     // remove dish or multiple dishes of the same kind from OrderSummary component
     removeItemFromOrder: (state, action) => {
@@ -40,8 +40,8 @@ const cartSlice = createSlice({
         state.cartItems,
         'REMOVEFROMORDER'
       );
-      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
-      localStorage.setItem('itemCount', JSON.stringify(state.itemCount));
+      sessionStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+      sessionStorage.setItem('itemCount', JSON.stringify(state.itemCount));
     },
   },
 });

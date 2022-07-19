@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useSelector } from 'react-redux';
 // Local Imports
 import Menu from './pages/Menu';
 import Header from './components/Header';
@@ -10,9 +11,8 @@ import './App.css';
 import Register from './components/Register';
 
 function App() {
-  // TODO: useAuth0 and update state in Redux store
-  //       update isAuthenticated for <Login />
-  const { isAuthenticated, user } = useAuth0();
+  // const { isAuthenticated, user, loginWithRedirect } = useAuth0();
+  const { isAuthenticated, token, user } = useSelector((state) => state.user);
   const [goToLogin, setGoToLogin] = useState(false);
   const [goToRegister, setGoToRegister] = useState(false);
 
@@ -22,6 +22,8 @@ function App() {
         <Header
           handleLogin={() => setGoToLogin(true)}
           handleRegister={() => setGoToRegister(true)}
+          isAuthenticated={isAuthenticated}
+          user={user}
         />
         <Routes>
           <Route path="/" element={<Menu user={user?.name} />} />

@@ -9,14 +9,20 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { Dialog, DialogTitle, DialogContent } from '@mui/material';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 // Local Imports
 import { theme } from '../constants';
 import { transition } from '../constants';
 import { useLoginUserMutation } from '../features/userApi';
+import { login } from '../features/userSlice';
 
 const Login = ({ openLogin, handleClose }) => {
+  const dispatch = useDispatch();
+
   const [loginUser] = useLoginUserMutation();
   const [user, setUser] = useState({});
+  const [remember, setRemember] = useState(false);
+  const [errMessage, setErrMessage] = useState({});
 
   const handleChange = (e) => {
     setUser((prev) => ({
@@ -25,13 +31,43 @@ const Login = ({ openLogin, handleClose }) => {
     }));
   };
 
+  const handleRemember = (e) => {
+    setRemember(e.target.checked);
+  };
+
   const handleSubmit = async () => {
+    setErrMessage({});
+    if (!user.password) {
+      setErrMessage((prev) => ({
+        ...prev,
+        password: "Password can't be empty",
+      }));
+    }
+    if (!user.email) {
+      setErrMessage((prev) => ({ ...prev, email: "Email can't be empty" }));
+    }
     if (user.password && user.email) {
-      console.log(user);
       await loginUser(user)
         .unwrap()
-        .then((data) => console.log(data))
-        .catch((err) => console.log(err));
+        .then((data) => {
+          const { firstName, lastName, token } = data;
+
+          dispatch(
+            login({
+              token,
+              isAuthenticated: true,
+              user: { firstName, lastName },
+              remember,
+            })
+          );
+          handleClose();
+        })
+        .catch((err) => {
+          if (err.data.error === 'Wrong password')
+            setErrMessage({ password: err.data.error });
+          if (err.data.error === "Email doesn't exist")
+            setErrMessage({ email: err.data.error });
+        });
     }
   };
 
@@ -64,6 +100,7 @@ const Login = ({ openLogin, handleClose }) => {
           autoComplete="email"
           autoFocus
           onChange={handleChange}
+          helperText={errMessage.email}
         />
         <TextField
           variant="standard"
@@ -76,9 +113,16 @@ const Login = ({ openLogin, handleClose }) => {
           id="password"
           autoComplete="current-password"
           onChange={handleChange}
+          helperText={errMessage.password}
         />
         <FormControlLabel
-          control={<Checkbox value="remember" color="secondary" />}
+          control={
+            <Checkbox
+              color="secondary"
+              onChange={handleRemember}
+              name="remember"
+            />
+          }
           label="Remember me"
         />
         <Button

@@ -12,8 +12,9 @@ import {
   styled,
   Button,
 } from '@mui/material';
+import { setLogout } from '../features/userSlice';
 
-const Header = ({ handleLogin, handleRegister }) => {
+const Header = ({ handleLogin, handleRegister, isAuthenticated, user }) => {
   const dispatch = useDispatch();
 
   const handleReset = () => {
@@ -69,29 +70,60 @@ const Header = ({ handleLogin, handleRegister }) => {
             }}
           />
 
-          <Button
-            variant="text"
-            onClick={handleLogin}
-            color="primary"
-            disableRipple
-            sx={{
-              '&:hover': { backgroundColor: 'white' },
-            }}
-          >
-            Login
-          </Button>
+          {isAuthenticated && (
+            <Button
+              variant="text"
+              color="primary"
+              disableRipple
+              sx={{
+                '&:hover': { backgroundColor: 'white' },
+              }}
+            >
+              Hi,{user.firstName}
+            </Button>
+          )}
 
-          <Button
-            variant="text"
-            onClick={handleRegister}
-            color="primary"
-            disableRipple
-            sx={{
-              '&:hover': { backgroundColor: 'white' },
-            }}
-          >
-            Create Account
-          </Button>
+          {isAuthenticated && (
+            <Button
+              variant="text"
+              color="primary"
+              disableRipple
+              onClick={() => dispatch(setLogout())}
+              sx={{
+                '&:hover': { backgroundColor: 'white' },
+              }}
+            >
+              Logout
+            </Button>
+          )}
+
+          {!isAuthenticated && (
+            <Button
+              variant="text"
+              onClick={handleLogin}
+              color="primary"
+              disableRipple
+              sx={{
+                '&:hover': { backgroundColor: 'white' },
+              }}
+            >
+              Login
+            </Button>
+          )}
+
+          {!isAuthenticated && (
+            <Button
+              variant="text"
+              onClick={handleRegister}
+              color="primary"
+              disableRipple
+              sx={{
+                '&:hover': { backgroundColor: 'white' },
+              }}
+            >
+              Create Account
+            </Button>
+          )}
         </Stack>
       </Toolbar>
     </AppBar>
