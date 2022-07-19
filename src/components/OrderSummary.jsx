@@ -112,7 +112,12 @@ const OrderSummary = (props) => {
         direction="column"
         style={{ position: 'sticky', top: '100px', right: 0 }}
       >
-        <Typography variant="h6">Order Summary</Typography>
+        <Typography variant="span" ml={1} mt={1} sx={{ fontWeight: 'bolder' }}>
+          Your Order
+        </Typography>
+        <Typography variant="span" ml={1} color="#969696fc">
+          {itemCount} Items
+        </Typography>
 
         <div>
           <TableContainer>
@@ -124,21 +129,24 @@ const OrderSummary = (props) => {
                       key={i.identifier}
                       sx={{ verticalAlign: 'text-top' }}
                     >
-                      <TableCell>{i.qty}</TableCell>
-                      <TableCell>
+                      <TableCell sx={{ border: 'none' }}>{i.qty}</TableCell>
+                      <TableCell sx={{ border: 'none' }}>
                         <List>
                           <ListItem disablePadding>
                             <ListItemText primary={i.name} />
                           </ListItem>
                           {i.side && (
-                            <ListItem disablePadding>
+                            <ListItem
+                              disablePadding
+                              sx={{ color: '#969696fc' }}
+                            >
                               <ListItemText primary={i.side.name} />
                             </ListItem>
                           )}
                           <ListItem disablePadding>
                             <Button
+                              color="secondary"
                               sx={{
-                                display: 'inline-block',
                                 padding: 0,
                                 minHeight: 0,
                                 minWidth: 0,
@@ -165,8 +173,8 @@ const OrderSummary = (props) => {
                             </Button>
 
                             <Button
+                              color="secondary"
                               sx={{
-                                display: 'inline-block',
                                 padding: 0,
                                 minHeight: 0,
                                 minWidth: 0,
@@ -193,7 +201,7 @@ const OrderSummary = (props) => {
                         </List>
                       </TableCell>
 
-                      <TableCell>
+                      <TableCell sx={{ border: 'none' }}>
                         {i.side
                           ? `$${(
                               (Number(i.price) + Number(i.side.price)) *
@@ -205,15 +213,15 @@ const OrderSummary = (props) => {
                   ))}
               </TableBody>
             </Table>
-          </TableContainer>
 
-          <section className="cart-bottom">
-            <p className="cart-item-count">{itemCount} Items</p>
-            <div className="cart-total">
-              <p>Total</p>
-              <p>{total}</p>
-            </div>
-          </section>
+            <section className="cart-bottom">
+              <p className="cart-item-count">{itemCount} Items</p>
+              <div className="cart-total">
+                <p>Total</p>
+                <p>{total}</p>
+              </div>
+            </section>
+          </TableContainer>
         </div>
 
         {openEditPopup && dishData && sidesData && (

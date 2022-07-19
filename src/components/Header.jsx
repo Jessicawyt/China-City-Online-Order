@@ -33,8 +33,24 @@ const Header = ({ handleLogin, handleRegister }) => {
       }}
     >
       <Toolbar>
-        <Typography variant="h6" component="span" sx={{ flexGrow: 1 }}>
-          <Link to="/">China City</Link>
+        <Typography
+          variant="h6"
+          component="span"
+          sx={{
+            flexGrow: 1,
+          }}
+        >
+          <Link to="/">
+            <Typography
+              sx={{
+                color: '#ba1818e8',
+                fontFamily: 'Monoton, cursive',
+                fontSize: '24px',
+              }}
+            >
+              China City
+            </Typography>
+          </Link>
         </Typography>
 
         <Stack direction="row" spacing={3} alignItems="center">

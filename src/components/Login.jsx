@@ -8,13 +8,32 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { Dialog, DialogTitle, DialogContent } from '@mui/material';
-
+import { useState } from 'react';
 // Local Imports
 import { theme } from '../constants';
 import { transition } from '../constants';
+import { useLoginUserMutation } from '../features/userApi';
 
 const Login = ({ openLogin, handleClose }) => {
-  const handleSubmit = () => {};
+  const [loginUser] = useLoginUserMutation();
+  const [user, setUser] = useState({});
+
+  const handleChange = (e) => {
+    setUser((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async () => {
+    if (user.password && user.email) {
+      console.log(user);
+      await loginUser(user)
+        .unwrap()
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err));
+    }
+  };
 
   return (
     <Dialog
@@ -44,6 +63,7 @@ const Login = ({ openLogin, handleClose }) => {
           name="email"
           autoComplete="email"
           autoFocus
+          onChange={handleChange}
         />
         <TextField
           variant="standard"
@@ -55,6 +75,7 @@ const Login = ({ openLogin, handleClose }) => {
           type="password"
           id="password"
           autoComplete="current-password"
+          onChange={handleChange}
         />
         <FormControlLabel
           control={<Checkbox value="remember" color="secondary" />}
@@ -65,6 +86,7 @@ const Login = ({ openLogin, handleClose }) => {
           fullWidth
           variant="contained"
           color="secondary"
+          onClick={handleSubmit}
           sx={{ mt: 3, mb: 2 }}
         >
           Sign In

@@ -40,15 +40,16 @@ a {
 }
 
 .Menu-And-Order {
+  width: 100%;
 }
 
 .Order-Summary {
+  width: 30%;
 }
 
 .cart-bottom {
   width: 100%;
   text-align: end;
-  border-top: 1px solid white;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

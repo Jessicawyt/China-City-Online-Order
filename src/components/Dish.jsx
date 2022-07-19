@@ -150,7 +150,6 @@ const Dish = (props) => {
               component="span"
               noWrap={true}
               sx={{
-                letterSpacing: '-0.5px',
                 fontWeight: 'bolder',
               }}
             >

@@ -21,14 +21,14 @@ const CategoryTabs = ({
       >
         <Tab
           label="All"
-          sx={{ fontSize: '10px' }}
+          sx={{ fontSize: '15px' }}
           onClick={setCategorizedDishes}
         />
         {filterCategories?.map((d) => (
           <Tab
             key={d.id}
             label={d.category}
-            sx={{ fontSize: '10px' }}
+            sx={{ fontSize: '15px' }}
             onClick={() => categorizeDishes(d.id)}
           />
         ))}

@@ -46,7 +46,7 @@ const Menu = () => {
   };
 
   return (
-    <Stack direction="column">
+    <Stack direction="column" sx={{ width: '100%' }}>
       <CategoryTabs
         filterCategories={filterCategories}
         val={val}
@@ -58,8 +58,8 @@ const Menu = () => {
       <Stack direction="row" className="Menu-And-Order">
         <Grid
           container
-          spacing={3}
-          sx={{ paddingLeft: '10px', paddingRight: '10px', width: '65%' }}
+          spacing={1}
+          sx={{ paddingLeft: '10px', paddingRight: '10px', width: '70%' }}
         >
           {val !== 0 &&
             categorizedDishes?.map((d) => (
@@ -82,7 +82,7 @@ const Menu = () => {
           {/* Rendering all the dishes when tab All is chosen, including the first rendering */}
           {val === 0 &&
             filteredDataDishes?.map((d) => (
-              <Grid item key={d.id} xs={6} sm={4} md={4}>
+              <Grid item key={d.id} xs={6} sm={6} md={4}>
                 <Dish
                   dishId={d.id}
                   name={d.name}

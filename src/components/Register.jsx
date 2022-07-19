@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -6,10 +7,71 @@ import {
   Stack,
   Grid,
   Button,
+  DialogActions,
 } from '@mui/material';
 import { transition } from '../constants';
+import { useRegisterUserMutation } from '../features/userApi';
 
 const Register = ({ openRegister, handleClose }) => {
+  const [user, setUser] = useState({});
+  const [errMessage, setErrMessage] = useState({});
+
+  const [registerUser, { isLoading, isSuccess }] = useRegisterUserMutation();
+
+  const handleChange = (e) => {
+    setUser((prev) => ({
+      ...user,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleRegister = async () => {
+    setErrMessage({});
+    if (Object.keys(user).length === 5 && user.password === user.password2) {
+      // post new user
+      await registerUser(user)
+        .unwrap()
+        .then((data) => handleClose())
+        .catch((err) => setErrMessage({ email: err.data.error }));
+    }
+    if (Object.keys(user).length === 5 && user.password !== user.password2) {
+      setErrMessage({
+        password: 'Your passwords do not match',
+        password2: 'Your passwords do not match',
+      });
+    }
+    if (!user.firstName) {
+      setErrMessage((prev) => ({
+        ...prev,
+        firstName: 'First name is empty',
+      }));
+    }
+    if (!user.lastName) {
+      setErrMessage((prev) => ({
+        ...prev,
+        lastName: 'Last name is empty',
+      }));
+    }
+    if (!user.email) {
+      setErrMessage((prev) => ({
+        ...prev,
+        email: 'Please fill in your email',
+      }));
+    }
+    if (!user.password) {
+      setErrMessage((prev) => ({
+        ...prev,
+        password: 'Please fill in your passord',
+      }));
+    }
+    if (!user.password2) {
+      setErrMessage((prev) => ({
+        ...prev,
+        password2: 'Please fill in your password',
+      }));
+    }
+  };
+
   return (
     <Dialog
       open={openRegister}
@@ -37,6 +99,8 @@ const Register = ({ openRegister, handleClose }) => {
               name="firstName"
               id="firstName"
               label="First Name"
+              onChange={handleChange}
+              helperText={errMessage.firstName}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={6}>
@@ -45,6 +109,8 @@ const Register = ({ openRegister, handleClose }) => {
               name="lastName"
               id="lastName"
               label="Last Name"
+              onChange={handleChange}
+              helperText={errMessage.lastName}
             />
           </Grid>
         </Grid>
@@ -55,6 +121,8 @@ const Register = ({ openRegister, handleClose }) => {
           id="email"
           label="Email"
           type="email"
+          onChange={handleChange}
+          helperText={errMessage.email}
         />
 
         <TextField
@@ -63,6 +131,8 @@ const Register = ({ openRegister, handleClose }) => {
           id="password"
           label="Password"
           type="password"
+          onChange={handleChange}
+          helperText={errMessage.password}
         />
 
         <TextField
@@ -71,17 +141,22 @@ const Register = ({ openRegister, handleClose }) => {
           id="password2"
           label="Confirm Password"
           type="password"
+          onChange={handleChange}
+          helperText={errMessage.password2}
         />
 
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="secondary"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Register
-        </Button>
+        <DialogActions>
+          <Button
+            type="submit"
+            fullWidth
+            onClick={handleRegister}
+            variant="contained"
+            color="secondary"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Register
+          </Button>
+        </DialogActions>
       </DialogContent>
     </Dialog>
   );
