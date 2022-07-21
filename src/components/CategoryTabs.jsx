@@ -26,10 +26,10 @@ const CategoryTabs = ({
         />
         {filterCategories?.map((d) => (
           <Tab
-            key={d.id}
+            key={d._id}
             label={d.category}
             sx={{ fontSize: '15px' }}
-            onClick={() => categorizeDishes(d.id)}
+            onClick={() => categorizeDishes(d._id)}
           />
         ))}
       </Tabs>

@@ -125,8 +125,8 @@ const Dish = (props) => {
         <div style={{ position: 'relative' }}>
           <CardMedia
             component="img"
-            width="120"
-            height="150"
+            width="100"
+            height="120"
             image={image}
             alt={name}
             sx={{ '&:hover': { cursor: 'pointer' } }}
@@ -141,7 +141,6 @@ const Dish = (props) => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              // whiteSpace: 'nowrap',
               gap: '.4rem',
             }}
           >

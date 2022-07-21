@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const dishesApi = createApi({
   reducerPath: 'dishesApi',
 
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:4000' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3555/chinacity' }),
   tagTypes: ['dishes'],
   endpoints: (builder) => ({
     getDishes: builder.query({
@@ -11,29 +11,29 @@ export const dishesApi = createApi({
       providesTags: ['dishes'],
     }),
     getDishesByCategory: builder.query({
-      query: (categoryId) => `/categories/${categoryId}/dishes`,
+      query: (categoryId) => `/dishes/${categoryId}`,
       providesTags: ['categories'],
     }),
-    getDish: builder.query({
-      query: (id) => `/dishes/${id}`,
-      providesTags: ['dishes'],
-    }),
-    updateDish: builder.mutation({
-      query: ({ id, ...rest }) => ({
-        url: `/dishes/${id}`,
-        method: 'PUT',
-        body: rest,
-      }),
-      invalidatesTags: ['dishes'],
-    }),
-    deleteDish: builder.mutation({
-      query: ({ id, ...rest }) => ({
-        url: `/dishes/${id}`,
-        method: 'DELETE',
-        body: rest,
-      }),
-      invalidatesTags: ['dishes'],
-    }),
+    // getDish: builder.query({
+    //   query: (id) => `/dishes/${id}`,
+    //   providesTags: ['dishes'],
+    // }),
+    // updateDish: builder.mutation({
+    //   query: ({ id, ...rest }) => ({
+    //     url: `/dishes/${id}`,
+    //     method: 'PUT',
+    //     body: rest,
+    //   }),
+    //   invalidatesTags: ['dishes'],
+    // }),
+    // deleteDish: builder.mutation({
+    //   query: ({ id, ...rest }) => ({
+    //     url: `/dishes/${id}`,
+    //     method: 'DELETE',
+    //     body: rest,
+    //   }),
+    //   invalidatesTags: ['dishes'],
+    // }),
   }),
 });
 

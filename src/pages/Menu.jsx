@@ -23,11 +23,13 @@ const Menu = () => {
   } = useGetDishesQuery();
 
   // get side categoryId for customization in Popup
-  const sideCategoryId = dataCategory?.find((c) => c.category === 'Side').id;
+  const sideCategoryId = dataCategory?.find((c) => c.category === 'Side')._id;
 
-  const filterCategories = dataCategory?.filter((c) => c.id !== sideCategoryId);
+  const filterCategories = dataCategory?.filter(
+    (c) => c._id !== sideCategoryId
+  );
   const filteredDataDishes = dataDishes?.filter(
-    (d) => d.categoryId !== sideCategoryId
+    (d) => d.category !== sideCategoryId
   );
 
   const [val, setVal] = useState(0);
@@ -37,9 +39,9 @@ const Menu = () => {
 
   const categorizeDishes = (id) => {
     // filter dataDishes by categoryId
-    if (filteredDataDishes && id !== sideCategoryId) {
-      const filteredDishes = filteredDataDishes.filter(
-        (d) => d.categoryId === id
+    if (id !== sideCategoryId) {
+      const filteredDishes = filteredDataDishes?.filter(
+        (d) => d.category === id
       );
       setCategorizedDishes(filteredDishes);
     }
@@ -59,13 +61,13 @@ const Menu = () => {
         <Grid
           container
           spacing={1}
-          sx={{ paddingLeft: '10px', paddingRight: '10px', width: '70%' }}
+          sx={{ paddingLeft: '10px', paddingRight: '10px', width: '69%' }}
         >
           {val !== 0 &&
             categorizedDishes?.map((d) => (
-              <Grid item key={d.id} xs={6} sm={6} md={4}>
+              <Grid item key={d._id} xs={6} sm={6} md={4}>
                 <Dish
-                  dishId={d.id}
+                  dishId={d._id}
                   name={d.name}
                   price={d.price}
                   image={d.image}
@@ -82,9 +84,9 @@ const Menu = () => {
           {/* Rendering all the dishes when tab All is chosen, including the first rendering */}
           {val === 0 &&
             filteredDataDishes?.map((d) => (
-              <Grid item key={d.id} xs={6} sm={6} md={4}>
+              <Grid item key={d._id} xs={6} sm={6} md={4}>
                 <Dish
-                  dishId={d.id}
+                  dishId={d._id}
                   name={d.name}
                   price={d.price}
                   image={d.image}

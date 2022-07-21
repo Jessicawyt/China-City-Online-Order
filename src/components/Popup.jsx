@@ -53,7 +53,7 @@ const Popup = (props) => {
 
   // sides only stores 1 side id
   const [sideId, setSideId] = useState(
-    isEditPopup ? (side === 'NoSide' ? ['NoSide'] : [side.id.toString()]) : []
+    isEditPopup ? (side === 'NoSide' ? ['NoSide'] : [side._id.toString()]) : []
   );
 
   const handleChange = (e) => {
@@ -73,7 +73,7 @@ const Popup = (props) => {
       handleClose();
       // find the side chosed by its id(local state side)
       let sideObj = sidesData.find(
-        (s) => s.id.toString() === sideId[0].toString()
+        (s) => s._id.toString() === sideId[0].toString()
       );
       // add qty property to the obj
       sideObj = { ...sideObj, qty: qty };
@@ -172,7 +172,7 @@ const Popup = (props) => {
     // if there is a side and the side stays the same, add the side, update the qty
     if (sideId.length > 0 && dishId.toString() + sideId[0] === dishIdentifier) {
       let sideObj = sidesData.find(
-        (s) => s.id.toString() === sideId[0].toString()
+        (s) => s._id.toString() === sideId[0].toString()
       );
       sideObj = { ...sideObj, qty };
       dispatch(
@@ -193,7 +193,7 @@ const Popup = (props) => {
       dishId.toString() + sideId[0] !== dishIdentifier
     ) {
       let sideObj = sidesData.find(
-        (s) => s.id.toString() === sideId[0].toString()
+        (s) => s._id.toString() === sideId[0].toString()
       );
       sideObj = { ...sideObj, qty };
       console.log(sideObj);
@@ -242,14 +242,14 @@ const Popup = (props) => {
 
               <FormGroup>
                 {sidesData?.map((s) => (
-                  <Stack direction="row" key={s.id}>
+                  <Stack direction="row" key={s._id}>
                     <FormControlLabel
                       sx={{ flexGrow: 1 }}
                       label={s.name}
-                      value={s.id.toString()}
+                      value={s._id.toString()}
                       control={
                         <Radio
-                          checked={sideId.includes(s.id.toString())}
+                          checked={sideId.includes(s._id.toString())}
                           onChange={handleChange}
                           sx={{
                             '&.Mui-checked': {

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 // Local Imports
 import Menu from './pages/Menu';
 import Header from './components/Header';
-import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
 import Login from './components/Login';
 import './App.css';
 import Register from './components/Register';
@@ -27,7 +27,7 @@ function App() {
         />
         <Routes>
           <Route path="/" element={<Menu user={user?.name} />} />
-          {/* <Route path="/cart" element={<Cart />} /> */}
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/login" element={<Login />} />
         </Routes>
         {goToLogin && (

@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { resetItems } from '../features/cartSlice';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {
   Badge,
@@ -16,11 +14,6 @@ import { setLogout } from '../features/userSlice';
 
 const Header = ({ handleLogin, handleRegister, isAuthenticated, user }) => {
   const dispatch = useDispatch();
-
-  const handleReset = () => {
-    dispatch(resetItems());
-  };
-
   const { itemCount } = useSelector((state) => state.cart);
 
   return (
@@ -33,14 +26,13 @@ const Header = ({ handleLogin, handleRegister, isAuthenticated, user }) => {
         boxShadow: '0px 1px 5px 0px rgba(36,36,36,0.2)',
       }}
     >
-      <Toolbar>
-        <Typography
-          variant="h6"
-          component="span"
-          sx={{
-            flexGrow: 1,
-          }}
-        >
+      <Toolbar
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Typography variant="h6" component="span">
           <Link to="/">
             <Typography
               sx={{
@@ -55,27 +47,13 @@ const Header = ({ handleLogin, handleRegister, isAuthenticated, user }) => {
         </Typography>
 
         <Stack direction="row" spacing={3} alignItems="center">
-          <Link to="/cart">
-            <Badge badgeContent={itemCount} showZero>
-              <ShoppingCartIcon />
-            </Badge>
-          </Link>
-
-          <DeleteForeverIcon
-            size="large"
-            onClick={handleReset}
-            sx={{
-              '&:hover': { cursor: 'pointer' },
-              color: 'black',
-            }}
-          />
-
           {isAuthenticated && (
             <Button
               variant="text"
               color="primary"
               disableRipple
               sx={{
+                fontWeight: 'bold',
                 '&:hover': { backgroundColor: 'white' },
               }}
             >
@@ -90,6 +68,7 @@ const Header = ({ handleLogin, handleRegister, isAuthenticated, user }) => {
               disableRipple
               onClick={() => dispatch(setLogout())}
               sx={{
+                fontWeight: 'bold',
                 '&:hover': { backgroundColor: 'white' },
               }}
             >
@@ -104,6 +83,7 @@ const Header = ({ handleLogin, handleRegister, isAuthenticated, user }) => {
               color="primary"
               disableRipple
               sx={{
+                fontWeight: 'bold',
                 '&:hover': { backgroundColor: 'white' },
               }}
             >
@@ -118,6 +98,7 @@ const Header = ({ handleLogin, handleRegister, isAuthenticated, user }) => {
               color="primary"
               disableRipple
               sx={{
+                fontWeight: 'bold',
                 '&:hover': { backgroundColor: 'white' },
               }}
             >
