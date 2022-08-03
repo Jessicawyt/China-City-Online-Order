@@ -31,7 +31,6 @@ const OrderSummary = (props) => {
   const dispatch = useDispatch();
 
   const { data: sidesData } = useGetDishesByCategoryQuery(sideCategoryId);
-  console.log(sidesData);
 
   const { itemCount, cartItems } = useSelector((state) => state.cart);
 
@@ -275,7 +274,7 @@ const OrderSummary = (props) => {
           </Grid>
         </Grid>
 
-        <Link to="/checkout">
+        <Link to="/checkout" style={{ textDecoration: 'none' }}>
           <Button
             startIcon={<ShoppingCartIcon />}
             variant="contained"

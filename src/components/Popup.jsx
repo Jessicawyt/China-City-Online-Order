@@ -242,7 +242,7 @@ const Popup = (props) => {
 
               <FormGroup>
                 {sidesData?.map((s) => (
-                  <Stack direction="row" key={s._id}>
+                  <Stack direction="row" key={s._id} alignItems="center">
                     <FormControlLabel
                       sx={{ flexGrow: 1 }}
                       label={s.name}

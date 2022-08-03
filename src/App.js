@@ -26,7 +26,7 @@ function App() {
           user={user}
         />
         <Routes>
-          <Route path="/" element={<Menu user={user?.name} />} />
+          <Route path="/" element={<Menu user={user?.firstName} />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/login" element={<Login />} />
         </Routes>

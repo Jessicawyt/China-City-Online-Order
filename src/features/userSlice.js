@@ -9,7 +9,7 @@ const initialState = {
     : false,
   user: localStorage.getItem('user')
     ? JSON.parse(localStorage.getItem('user'))
-    : null,
+    : {},
   remember: localStorage.getItem('remember')
     ? JSON.parse(localStorage.getItem('remember'))
     : false,
@@ -40,7 +40,7 @@ export const userSlice = createSlice({
     setLogout: (state) => {
       state.isAuthenticated = false;
       state.token = null;
-      state.user = null;
+      state.user = {};
       state.remember = false;
       localStorage.removeItem('user');
       localStorage.removeItem('token');

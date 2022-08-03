@@ -1,17 +1,13 @@
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
 import { Dialog, DialogTitle, DialogContent } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 // Local Imports
-import { theme } from '../constants';
 import { transition } from '../constants';
 import { useLoginUserMutation } from '../features/userApi';
 import { login } from '../features/userSlice';
@@ -50,13 +46,12 @@ const Login = ({ openLogin, handleClose }) => {
       await loginUser(user)
         .unwrap()
         .then((data) => {
-          const { firstName, lastName, token } = data;
-
+          const { user, token } = data;
           dispatch(
             login({
               token,
               isAuthenticated: true,
-              user: { firstName, lastName },
+              user,
               remember,
             })
           );

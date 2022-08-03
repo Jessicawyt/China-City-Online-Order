@@ -33,7 +33,7 @@ const Header = ({ handleLogin, handleRegister, isAuthenticated, user }) => {
         }}
       >
         <Typography variant="h6" component="span">
-          <Link to="/">
+          <Link to="/" style={{ textDecoration: 'none' }}>
             <Typography
               sx={{
                 color: '#ba1818e8',
@@ -57,7 +57,7 @@ const Header = ({ handleLogin, handleRegister, isAuthenticated, user }) => {
                 '&:hover': { backgroundColor: 'white' },
               }}
             >
-              Hi,{user.firstName}
+              Hi,{user?.firstName}
             </Button>
           )}
 
