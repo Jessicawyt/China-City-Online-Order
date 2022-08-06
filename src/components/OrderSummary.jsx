@@ -24,6 +24,7 @@ import { removeItemFromOrder } from '../features/cartSlice';
 import Popup from './Popup';
 import { useGetDishesByCategoryQuery } from '../features/dishesApi';
 import { resetItems } from '../features/cartSlice';
+import CalculateTotal from './CalculateTotal';
 
 const OrderSummary = (props) => {
   const { sideCategoryId } = props;
@@ -167,8 +168,10 @@ const OrderSummary = (props) => {
             {cartItems.length > 0 &&
               cartItems.map((i) => (
                 <TableRow key={i.identifier} sx={{ verticalAlign: 'text-top' }}>
-                  <TableCell sx={{ border: 'none' }}>{i.qty}</TableCell>
-                  <TableCell sx={{ border: 'none' }}>
+                  <TableCell sx={{ border: 'none', fontWeight: 'bold' }}>
+                    {i.qty}
+                  </TableCell>
+                  <TableCell sx={{ border: 'none', padding: 0 }}>
                     <List>
                       <ListItem disablePadding>
                         <ListItemText primary={i.name} />
@@ -259,20 +262,7 @@ const OrderSummary = (props) => {
       >
         <Divider textAlign="left">{itemCount} Items</Divider>
 
-        <Grid container mt={1} spacing={2} textAlign="center">
-          <Grid item sm={6} md={6}>
-            <Typography sx={{ fontWeight: 'bold' }}>Tax</Typography>
-          </Grid>
-          <Grid item sm={6} md={6}>
-            <Typography>$01.25</Typography>
-          </Grid>
-          <Grid item sm={6} md={6}>
-            <Typography sx={{ fontWeight: 'bold' }}>Total</Typography>
-          </Grid>
-          <Grid item sm={6} md={6}>
-            <Typography>${total}</Typography>
-          </Grid>
-        </Grid>
+        <CalculateTotal total={total} />
 
         <Link to="/checkout" style={{ textDecoration: 'none' }}>
           <Button
