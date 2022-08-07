@@ -7,7 +7,7 @@ const CalculateTotal = ({ total }) => {
         <Typography sx={{ fontWeight: 'bold' }}>Tax</Typography>
       </Grid>
       <Grid item sm={6} md={6}>
-        <Typography>$01.25</Typography>
+        <Typography>$0.00</Typography>
       </Grid>
       <Grid item sm={6} md={6}>
         <Typography sx={{ fontWeight: 'bold' }}>Total</Typography>

@@ -12,7 +12,7 @@ import Register from './components/Register';
 
 function App() {
   // const { isAuthenticated, user, loginWithRedirect } = useAuth0();
-  const { isAuthenticated, token, user } = useSelector((state) => state.user);
+  const { isAuthenticated, user } = useSelector((state) => state.user);
   const [goToLogin, setGoToLogin] = useState(false);
   const [goToRegister, setGoToRegister] = useState(false);
 

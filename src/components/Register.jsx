@@ -4,17 +4,24 @@ import {
   DialogTitle,
   DialogContent,
   TextField,
-  Stack,
   Grid,
   Button,
   DialogActions,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  FormControl,
+  FormLabel,
 } from '@mui/material';
 import { transition } from '../constants';
 import { useRegisterUserMutation } from '../features/userApi';
+import Login from './Login';
 
 const Register = ({ openRegister, handleClose }) => {
   const [user, setUser] = useState({});
   const [errMessage, setErrMessage] = useState({});
+  const [goToLogin, setGoToLogin] = useState(false);
+  const [backFromRegister, setBackFromRegister] = useState(false);
 
   const [registerUser, { isLoading, isSuccess }] = useRegisterUserMutation();
 
@@ -27,11 +34,24 @@ const Register = ({ openRegister, handleClose }) => {
 
   const handleRegister = async () => {
     setErrMessage({});
-    if (Object.keys(user).length === 5 && user.password === user.password2) {
+    let userData = { ...user };
+    userData.userType = userData.userType ? userData.userType : 'isCustomer';
+    if (
+      Object.keys(userData).length === 6 &&
+      user.password === user.password2
+    ) {
+      delete userData.password2;
+      userData.isAdmin = userData.userType === 'isAdmin' ? true : false;
+      userData.isCustomer = userData.userType === 'isCustomer' ? true : false;
+      delete userData.userType;
       // post new user
-      await registerUser(user)
+      await registerUser(userData)
         .unwrap()
-        .then((data) => handleClose())
+        .then((data) => {
+          setGoToLogin(true);
+          setBackFromRegister(true);
+          if (!goToLogin && backFromRegister) handleClose();
+        })
         .catch((err) => setErrMessage({ email: err.data.error }));
     }
     if (Object.keys(user).length === 5 && user.password !== user.password2) {
@@ -73,92 +93,120 @@ const Register = ({ openRegister, handleClose }) => {
   };
 
   return (
-    <Dialog
-      open={openRegister}
-      onClose={handleClose}
-      TransitionComponent={transition}
-      PaperProps={{ sx: { width: '350px', height: 'auto' } }}
-    >
-      <DialogTitle mt={2} textAlign="center">
-        Create An Account
-      </DialogTitle>
-      <DialogContent
-        sx={{
-          marginTop: 0,
-          padding: '0 16%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'stretch',
-          gap: '.8rem',
-        }}
-      >
-        <Grid container spacing={1}>
-          <Grid item xs={12} sm={6} md={6}>
-            <TextField
-              variant="standard"
-              name="firstName"
-              id="firstName"
-              label="First Name"
-              onChange={handleChange}
-              helperText={errMessage.firstName}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={6}>
-            <TextField
-              variant="standard"
-              name="lastName"
-              id="lastName"
-              label="Last Name"
-              onChange={handleChange}
-              helperText={errMessage.lastName}
-            />
-          </Grid>
-        </Grid>
-
-        <TextField
-          variant="standard"
-          name="email"
-          id="email"
-          label="Email"
-          type="email"
-          onChange={handleChange}
-          helperText={errMessage.email}
-        />
-
-        <TextField
-          variant="standard"
-          name="password"
-          id="password"
-          label="Password"
-          type="password"
-          onChange={handleChange}
-          helperText={errMessage.password}
-        />
-
-        <TextField
-          variant="standard"
-          name="password2"
-          id="password2"
-          label="Confirm Password"
-          type="password"
-          onChange={handleChange}
-          helperText={errMessage.password2}
-        />
-
-        <DialogActions>
-          <Button
-            type="submit"
-            fullWidth
-            onClick={handleRegister}
-            variant="contained"
-            color="secondary"
-            sx={{ mt: 3, mb: 2 }}
+    <>
+      {!goToLogin && !backFromRegister && (
+        <Dialog
+          open={openRegister}
+          onClose={handleClose}
+          TransitionComponent={transition}
+          PaperProps={{ sx: { width: '350px', height: 'auto' } }}
+        >
+          <DialogTitle mt={2} textAlign="center">
+            Create An Account
+          </DialogTitle>
+          <DialogContent
+            sx={{
+              marginTop: 0,
+              padding: '0 16%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'stretch',
+              gap: '.8rem',
+            }}
           >
-            Register
-          </Button>
-        </DialogActions>
-      </DialogContent>
-    </Dialog>
+            <Grid container spacing={1}>
+              <Grid item xs={12} sm={6} md={6}>
+                <TextField
+                  variant="standard"
+                  name="firstName"
+                  id="firstName"
+                  label="First Name"
+                  onChange={handleChange}
+                  helperText={errMessage.firstName}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={6}>
+                <TextField
+                  variant="standard"
+                  name="lastName"
+                  id="lastName"
+                  label="Last Name"
+                  onChange={handleChange}
+                  helperText={errMessage.lastName}
+                />
+              </Grid>
+            </Grid>
+
+            <TextField
+              variant="standard"
+              name="email"
+              id="email"
+              label="Email"
+              type="email"
+              onChange={handleChange}
+              helperText={errMessage.email}
+            />
+
+            <TextField
+              variant="standard"
+              name="password"
+              id="password"
+              label="Password"
+              type="password"
+              onChange={handleChange}
+              helperText={errMessage.password}
+            />
+
+            <TextField
+              variant="standard"
+              name="password2"
+              id="password2"
+              label="Confirm Password"
+              type="password"
+              onChange={handleChange}
+              helperText={errMessage.password2}
+            />
+
+            <FormControl>
+              <FormLabel htmlFor="userType">I am ... </FormLabel>
+              <RadioGroup
+                defaultValue="isCustomer"
+                name="userType"
+                row
+                onChange={handleChange}
+              >
+                <FormControlLabel
+                  value="isAdmin"
+                  control={<Radio />}
+                  label="Admin"
+                />
+                <FormControlLabel
+                  value="isCustomer"
+                  control={<Radio />}
+                  label="Customer"
+                />
+              </RadioGroup>
+            </FormControl>
+
+            <DialogActions>
+              <Button
+                type="submit"
+                fullWidth
+                onClick={handleRegister}
+                variant="contained"
+                color="secondary"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Register
+              </Button>
+            </DialogActions>
+          </DialogContent>
+        </Dialog>
+      )}
+      {goToLogin && (
+        <Login openLogin={goToLogin} handleClose={() => setGoToLogin(false)} />
+      )}
+    </>
   );
 };
 

@@ -21,9 +21,13 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 // Local Imports
 import CalculateTotal from '../components/CalculateTotal';
+import Login from '../components/Login';
 
 const Checkout = () => {
   const { itemCount, cartItems } = useSelector((state) => state.cart);
+  const { isAuthenticated } = useSelector((state) => state.user);
+
+  const [goToLogin, setGoToLogin] = useState(false);
 
   const handleChange = () => {};
 
@@ -110,8 +114,44 @@ const Checkout = () => {
 
   return (
     <Grid container justifyContent="center" alignItems="center" mt={5} mb={5}>
-      {/* customer information */}
       <Grid item>
+        <Stack direction="row" alignItems="baseline">
+          {/* Checkout Title */}
+          <Typography variant="h4" bold="true" sx={{ flexGrow: 1 }}>
+            Checkout
+          </Typography>
+          {/* Order type */}
+          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+            Pick up
+          </Typography>
+        </Stack>
+
+        {/* Name and Adress */}
+        <Stack mt={2} mb={1}>
+          <Typography sx={{ fontWeight: 'bold' }}>China City</Typography>
+          <Typography>1234 Cherry Street, Kent, OH</Typography>
+        </Stack>
+        {/* Account */}
+        {!isAuthenticated && (
+          <Stack direction="row" alignItems="center" mb={2}>
+            <Typography>Have an account?</Typography>
+            <Button
+              size="small"
+              sx={{ fontWeight: 'bold' }}
+              onClick={() => setGoToLogin(true)}
+            >
+              Log In
+            </Button>
+            {goToLogin && (
+              <Login
+                openLogin={goToLogin}
+                handleClose={() => setGoToLogin(false)}
+              />
+            )}
+          </Stack>
+        )}
+
+        {/* customer information */}
         <Stack direction="column" spacing={2}>
           <Accordion expanded={true} sx={{ width: '500px' }} disableGutters>
             <AccordionSummary
@@ -171,7 +211,7 @@ const Checkout = () => {
             color="secondary"
             sx={{ marginTop: '1.5rem', width: '100%' }}
           >
-            Confirm
+            Place Order
           </Button>
         </Stack>
       </Grid>
